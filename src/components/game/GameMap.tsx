@@ -1,9 +1,9 @@
-import { Team } from "@/types/game";
+import { TeamData } from "@/types/game";
 import tankIcon from "@/assets/tank-icon.png";
 import vietnamMap from "@/assets/vietnam-map.jpg";
 
 interface GameMapProps {
-  teams: Team[];
+  teams: TeamData[];
   currentStage: number;
 }
 
@@ -17,7 +17,7 @@ export function GameMap({ teams, currentStage }: GameMapProps) {
   return (
     <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden shadow-2xl border-2 border-border">
       <img src={vietnamMap} alt="Bản đồ Việt Nam" className="w-full h-full object-cover" />
-      
+
       {/* Stage markers */}
       {stagePositions.map((pos, idx) => (
         <div
@@ -40,9 +40,7 @@ export function GameMap({ teams, currentStage }: GameMapProps) {
 
       {/* Tank positions */}
       {teams.map((team, i) => {
-        const stageIdx = team.eliminated
-          ? Math.max(0, currentStage - 1)
-          : currentStage;
+        const stageIdx = team.eliminated ? Math.max(0, currentStage - 1) : currentStage;
         const pos = stagePositions[Math.min(stageIdx, stagePositions.length - 1)];
         const offset = (i - 1.5) * 5;
 
@@ -59,10 +57,10 @@ export function GameMap({ teams, currentStage }: GameMapProps) {
             <div className="flex flex-col items-center">
               <img src={tankIcon} alt="tank" className="w-12 h-8 object-contain" style={{ filter: team.eliminated ? "grayscale(1)" : "none" }} />
               <span
-                className="text-[9px] font-display font-bold px-1.5 py-0.5 rounded mt-0.5"
+                className="text-[9px] font-display font-bold px-1.5 py-0.5 rounded mt-0.5 flex items-center gap-0.5"
                 style={{ backgroundColor: team.color, color: "#fff" }}
               >
-                {team.name}
+                {team.icon} {team.name}
               </span>
             </div>
           </div>
