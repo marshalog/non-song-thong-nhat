@@ -1,15 +1,14 @@
-import { Team } from "@/types/game";
+import { TeamData } from "@/types/game";
 import victoryFlag from "@/assets/victory-flag.png";
 
 interface VictoryScreenProps {
-  winner: Team;
+  winner: TeamData;
   onRestart: () => void;
 }
 
 export function VictoryScreen({ winner, onRestart }: VictoryScreenProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden">
-      {/* Sunburst background */}
       <div className="absolute inset-0 bg-primary" />
       <div className="absolute inset-0 victory-sunburst" />
 
@@ -29,18 +28,9 @@ export function VictoryScreen({ winner, onRestart }: VictoryScreenProps) {
           className="inline-block px-10 py-6 rounded-2xl mb-8 shadow-2xl"
           style={{ backgroundColor: winner.color }}
         >
+          <div className="text-5xl mb-3">{winner.icon}</div>
           <h2 className="font-display text-3xl font-bold text-primary-foreground">{winner.name}</h2>
           <p className="text-primary-foreground/80 text-lg mt-1">🏆 Đội chiến thắng</p>
-          <div className="flex justify-center gap-3 mt-4">
-            {winner.players.map(p => (
-              <div key={p.id} className="flex flex-col items-center">
-                <div className="w-12 h-12 rounded-full bg-primary-foreground/20 flex items-center justify-center text-2xl border-2 border-gold">
-                  {p.avatar}
-                </div>
-                <span className="text-primary-foreground/80 text-xs mt-1">{p.name}</span>
-              </div>
-            ))}
-          </div>
         </div>
 
         <div>
@@ -51,7 +41,7 @@ export function VictoryScreen({ winner, onRestart }: VictoryScreenProps) {
             onClick={onRestart}
             className="px-8 py-3 rounded-lg bg-gold text-foreground font-display font-bold text-lg hover:bg-gold/90 transition-colors"
           >
-            Chơi lại
+            Quay lại trang chủ
           </button>
         </div>
       </div>

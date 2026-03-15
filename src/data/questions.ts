@@ -234,9 +234,3 @@ export const stages: StageData[] = [
   },
 ];
 
-export const defaultTeams = [
-  { id: 1, name: "Đội Sao Vàng", color: "#DA251D" },
-  { id: 2, name: "Đội Thống Nhất", color: "#FF6B35" },
-  { id: 3, name: "Đội Giải Phóng", color: "#1B998B" },
-  { id: 4, name: "Đội Độc Lập", color: "#2D3047" },
-];
