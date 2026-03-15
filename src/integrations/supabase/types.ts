@@ -14,7 +14,137 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      game_rooms: {
+        Row: {
+          admin_password: string
+          created_at: string
+          current_question_index: number
+          current_stage: number
+          id: string
+          phase: string
+          room_code: string
+          showing_answer: boolean
+          time_remaining: number
+          updated_at: string
+        }
+        Insert: {
+          admin_password?: string
+          created_at?: string
+          current_question_index?: number
+          current_stage?: number
+          id?: string
+          phase?: string
+          room_code: string
+          showing_answer?: boolean
+          time_remaining?: number
+          updated_at?: string
+        }
+        Update: {
+          admin_password?: string
+          created_at?: string
+          current_question_index?: number
+          current_stage?: number
+          id?: string
+          phase?: string
+          room_code?: string
+          showing_answer?: boolean
+          time_remaining?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      team_answers: {
+        Row: {
+          answer_index: number
+          created_at: string
+          id: string
+          question_index: number
+          room_id: string
+          stage: number
+          team_id: string
+          time_elapsed: number
+        }
+        Insert: {
+          answer_index: number
+          created_at?: string
+          id?: string
+          question_index: number
+          room_id: string
+          stage: number
+          team_id: string
+          time_elapsed?: number
+        }
+        Update: {
+          answer_index?: number
+          created_at?: string
+          id?: string
+          question_index?: number
+          room_id?: string
+          stage?: number
+          team_id?: string
+          time_elapsed?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_answers_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "game_rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "team_answers_team_id_fkey"
+            columns: ["team_id"]
+            isOneToOne: false
+            referencedRelation: "teams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      teams: {
+        Row: {
+          color: string
+          created_at: string
+          eliminated: boolean
+          icon: string
+          id: string
+          name: string
+          order_index: number
+          room_id: string
+          score: number
+        }
+        Insert: {
+          color?: string
+          created_at?: string
+          eliminated?: boolean
+          icon?: string
+          id?: string
+          name: string
+          order_index?: number
+          room_id: string
+          score?: number
+        }
+        Update: {
+          color?: string
+          created_at?: string
+          eliminated?: boolean
+          icon?: string
+          id?: string
+          name?: string
+          order_index?: number
+          room_id?: string
+          score?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teams_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "game_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
