@@ -164,17 +164,24 @@ const JoinPage = () => {
               <div>
                 <label className="font-display text-sm font-bold text-foreground block mb-2">Màu đội</label>
                 <div className="flex gap-2 flex-wrap">
-                  {TEAM_COLORS.map(color => (
-                    <button
-                      key={color}
-                      type="button"
-                      onClick={() => setSelectedColor(color)}
-                      className={`w-10 h-10 rounded-full border-3 transition-all ${
-                        selectedColor === color ? "scale-125 border-foreground shadow-[0_0_18px_rgba(0,0,0,0.4)]" : "border-transparent hover:scale-110"
-                      }`}
-                      style={{ backgroundColor: color }}
-                    />
-                  ))}
+                  {TEAM_COLORS.map(color => {
+                    const selected = selectedColor === color;
+                    return (
+                      <button
+                        key={color}
+                        type="button"
+                        onClick={() => setSelectedColor(color)}
+                        aria-label={`Chọn màu ${color}`}
+                        aria-pressed={selected}
+                        className={`w-10 h-10 rounded-full border-3 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
+                          selected
+                            ? "scale-125 border-foreground shadow-[0_0_22px_2px_rgba(250,204,21,0.75)]"
+                            : "border-transparent hover:scale-110"
+                        }`}
+                        style={{ backgroundColor: color }}
+                      />
+                    );
+                  })}
                 </div>
               </div>
 

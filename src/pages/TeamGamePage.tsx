@@ -217,7 +217,7 @@ const TeamGamePage = () => {
                           : "border-muted text-muted-foreground"
                       : isMyAnswer
                         ? "border-primary bg-primary/10"
-                        : !!myAnswer
+                        : myAnswer
                           ? "border-muted text-muted-foreground cursor-not-allowed"
                           : "border-border hover:border-primary hover:bg-primary/5 cursor-pointer active:scale-95 btn-neon"
                   }`}

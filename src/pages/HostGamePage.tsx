@@ -136,12 +136,14 @@ const HostGamePage = () => {
             <span className="bg-gold/20 text-gold px-3 py-1 rounded-full text-xs font-display font-bold">
               Phòng: {roomCode}
             </span>
-            <button
+            <Button
               onClick={() => setShowAdmin(!showAdmin)}
-              className="px-3 py-1 rounded-lg bg-primary/20 text-primary-foreground text-xs font-display font-bold hover:bg-primary/30 transition-colors"
+              variant="ghost"
+              size="sm"
+              className="px-3 py-1 font-display font-bold text-xs text-primary-foreground hover:text-primary-foreground hover:bg-primary/15 btn-neon"
             >
               {showAdmin ? "Ẩn bảng điều khiển" : "📊 Bảng điều khiển"}
-            </button>
+            </Button>
           </div>
         </div>
       </header>

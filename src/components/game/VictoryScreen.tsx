@@ -1,5 +1,5 @@
 import { TeamData } from "@/types/game";
-import victoryFlag from "@/assets/victory-flag.png";
+import victoryFlag from "@/assets/victory-flag.svg";
 import { Button } from "@/components/ui/button";
 
 interface VictoryScreenProps {
