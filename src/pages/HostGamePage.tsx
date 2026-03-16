@@ -11,6 +11,7 @@ import { VictoryScreen } from "@/components/game/VictoryScreen";
 import { HostControlPanel } from "@/components/game/HostControlPanel";
 import { VideoTransition } from "@/components/game/VideoTransition";
 import tankIcon from "@/assets/tank-icon.png";
+import { Button } from "@/components/ui/button";
 
 const HostGamePage = () => {
   const { roomCode } = useParams<{ roomCode: string }>();
@@ -83,20 +84,24 @@ const HostGamePage = () => {
               }
             }}
           />
-          <button
+          <Button
             onClick={() => {
               if (room && adminPwd === room.admin_password) {
                 sessionStorage.setItem(`admin-${roomCode}`, adminPwd);
                 setAdminAuth(true);
               }
             }}
-            className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-display font-bold hover:bg-primary/90 transition-colors"
+            className="w-full font-display font-bold btn-neon"
           >
             Xác nhận
-          </button>
-          <button onClick={() => navigate("/")} className="w-full mt-3 text-sm text-muted-foreground hover:text-foreground underline font-display">
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => navigate("/")}
+            className="w-full mt-3 text-sm text-muted-foreground hover:text-foreground font-display"
+          >
             ← Quay lại
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -184,13 +189,14 @@ const HostGamePage = () => {
                 ))}
               </div>
 
-              <button
+              <Button
                 onClick={hostActions.startStage}
                 disabled={activeTeams.length < 2}
-                className="w-full py-4 rounded-xl bg-primary text-primary-foreground font-display font-bold text-xl hover:bg-primary/90 transition-all disabled:opacity-50"
+                size="lg"
+                className="w-full font-display font-bold text-xl btn-neon"
               >
                 ⭐ BẮT ĐẦU {room.current_stage === 0 ? "GAME" : `CHẶNG ${room.current_stage + 1}`}
-              </button>
+              </Button>
             </div>
           </div>
         )}
@@ -242,12 +248,13 @@ const HostGamePage = () => {
               <p className="font-display text-xl text-gold font-bold mb-6 animate-fade-in-up">
                 🗺️ Các xe tăng đang di chuyển...
               </p>
-              <button
+              <Button
                 onClick={hostActions.nextStage}
-                className="px-8 py-4 rounded-xl bg-primary text-primary-foreground font-display font-bold text-lg hover:bg-primary/90 transition-all"
+                size="lg"
+                className="font-display font-bold text-lg px-8 btn-neon"
               >
                 Tiếp tục chặng tiếp theo →
-              </button>
+              </Button>
             </div>
           </div>
         )}

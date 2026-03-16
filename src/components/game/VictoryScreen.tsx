@@ -1,5 +1,6 @@
 import { TeamData } from "@/types/game";
 import victoryFlag from "@/assets/victory-flag.png";
+import { Button } from "@/components/ui/button";
 
 interface VictoryScreenProps {
   winner: TeamData;
@@ -37,12 +38,13 @@ export function VictoryScreen({ winner, onRestart }: VictoryScreenProps) {
           <p className="text-primary-foreground/70 text-sm italic mb-6">
             "Không có gì quý hơn độc lập, tự do" — Hồ Chí Minh
           </p>
-          <button
+          <Button
             onClick={onRestart}
-            className="px-8 py-3 rounded-lg bg-gold text-foreground font-display font-bold text-lg hover:bg-gold/90 transition-colors"
+            size="lg"
+            className="font-display text-lg px-8 btn-neon bg-gold text-foreground hover:bg-gold/90"
           >
             Quay lại trang chủ
-          </button>
+          </Button>
         </div>
       </div>
     </div>

@@ -114,6 +114,32 @@
   .victory-sunburst {
     background: radial-gradient(circle, hsl(60 100% 50% / 0.3) 0%, transparent 70%);
   }
+
+  .btn-neon {
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+  }
+
+  .btn-neon::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 0% 0%, rgba(250, 204, 21, 0.25), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+  }
+
+  .btn-neon:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0 22px 2px rgba(250, 204, 21, 0.75);
+  }
+
+  .btn-neon:hover::before {
+    opacity: 1;
+  }
 }
 
 @keyframes pulse-glow {

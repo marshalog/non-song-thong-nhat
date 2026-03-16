@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 function generateRoomCode(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -64,20 +65,22 @@ const CreateRoomPage = () => {
             <p className="text-xs text-muted-foreground mt-1">Dùng để truy cập bảng điều khiển host</p>
           </div>
 
-          <button
+          <Button
             onClick={handleCreate}
             disabled={loading}
-            className="w-full py-4 rounded-xl bg-primary text-primary-foreground font-display font-bold text-lg hover:bg-primary/90 transition-all disabled:opacity-50"
+            size="lg"
+            className="w-full font-display font-bold text-lg btn-neon"
           >
             {loading ? "Đang tạo..." : "⭐ TẠO PHÒNG"}
-          </button>
+          </Button>
 
-          <button
+          <Button
+            variant="ghost"
             onClick={() => navigate("/")}
-            className="w-full text-sm text-muted-foreground hover:text-foreground underline font-display"
+            className="w-full text-sm text-muted-foreground hover:text-foreground font-display"
           >
             ← Quay lại
-          </button>
+          </Button>
         </div>
       </div>
     </div>

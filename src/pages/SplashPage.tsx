@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logoGame from "@/assets/logo_game.png";
+import { Button } from "@/components/ui/button";
 
 const SplashPage = () => {
   const navigate = useNavigate();
@@ -27,26 +28,30 @@ const SplashPage = () => {
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <button
+          <Button
             onClick={() => navigate("/create")}
-            className="px-10 py-4 rounded-xl bg-primary text-primary-foreground font-display font-bold text-xl hover:bg-primary/90 transition-all hover:scale-105 shadow-lg min-w-[220px]"
+            size="lg"
+            className="font-display text-xl min-w-[220px] btn-neon"
           >
             🎮 TẠO PHÒNG
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => navigate("/join")}
-            className="px-10 py-4 rounded-xl bg-army text-primary-foreground font-display font-bold text-xl hover:bg-army-light transition-all hover:scale-105 shadow-lg min-w-[220px]"
+            size="lg"
+            variant="secondary"
+            className="font-display text-xl min-w-[220px] btn-neon"
           >
             🚀 THAM GIA
-          </button>
+          </Button>
         </div>
 
-        <button
+        <Button
           onClick={() => setShowInstructions(true)}
-          className="mt-6 text-muted-foreground hover:text-foreground underline font-display text-sm transition-colors"
+          variant="ghost"
+          className="mt-6 font-display text-sm text-muted-foreground hover:text-foreground"
         >
           📖 Hướng dẫn chơi game
-        </button>
+        </Button>
       </div>
 
       {/* Instructions dialog */}
@@ -79,12 +84,12 @@ const SplashPage = () => {
               </div>
             </div>
 
-            <button
+            <Button
               onClick={() => setShowInstructions(false)}
-              className="mt-6 w-full py-3 rounded-lg bg-primary text-primary-foreground font-display font-bold hover:bg-primary/90 transition-colors"
+              className="mt-6 w-full font-display font-bold btn-neon"
             >
               Đã hiểu!
-            </button>
+            </Button>
           </div>
         </div>
       )}

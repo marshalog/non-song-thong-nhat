@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { TEAM_ICONS, TEAM_COLORS } from "@/types/game";
 import { toast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 
 const JoinPage = () => {
   const navigate = useNavigate();
@@ -99,17 +100,23 @@ const JoinPage = () => {
                 maxLength={6}
               />
 
-              <button
+              <Button
                 onClick={handleCheckRoom}
                 disabled={loading}
-                className="w-full py-4 rounded-xl bg-army text-primary-foreground font-display font-bold text-lg hover:bg-army-light transition-all disabled:opacity-50"
+                size="lg"
+                variant="secondary"
+                className="w-full font-display font-bold text-lg btn-neon"
               >
                 {loading ? "Đang kiểm tra..." : "🚀 TIẾP TỤC"}
-              </button>
+              </Button>
 
-              <button onClick={() => navigate("/")} className="w-full text-sm text-muted-foreground hover:text-foreground underline font-display">
+              <Button
+                variant="ghost"
+                onClick={() => navigate("/")}
+                className="w-full text-sm text-muted-foreground hover:text-foreground font-display"
+              >
                 ← Quay lại
-              </button>
+              </Button>
             </div>
           </>
         ) : (
@@ -136,17 +143,19 @@ const JoinPage = () => {
                 <label className="font-display text-sm font-bold text-foreground block mb-2">Logo đội</label>
                 <div className="grid grid-cols-6 gap-2">
                   {TEAM_ICONS.map(item => (
-                    <button
+                    <Button
                       key={item.icon}
+                      type="button"
+                      variant={selectedIcon === item.icon ? "default" : "outline"}
                       onClick={() => setSelectedIcon(item.icon)}
                       className={`w-12 h-12 rounded-lg flex items-center justify-center text-2xl border-2 transition-all ${
                         selectedIcon === item.icon
-                          ? "border-primary bg-primary/10 scale-110"
-                          : "border-border hover:border-muted-foreground"
+                          ? "scale-110 btn-neon"
+                          : "border-border hover:border-muted-foreground bg-background"
                       }`}
                     >
                       {item.icon}
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </div>
@@ -158,9 +167,10 @@ const JoinPage = () => {
                   {TEAM_COLORS.map(color => (
                     <button
                       key={color}
+                      type="button"
                       onClick={() => setSelectedColor(color)}
                       className={`w-10 h-10 rounded-full border-3 transition-all ${
-                        selectedColor === color ? "scale-125 border-foreground" : "border-transparent hover:scale-110"
+                        selectedColor === color ? "scale-125 border-foreground shadow-[0_0_18px_rgba(0,0,0,0.4)]" : "border-transparent hover:scale-110"
                       }`}
                       style={{ backgroundColor: color }}
                     />
@@ -176,17 +186,22 @@ const JoinPage = () => {
                 </span>
               </div>
 
-              <button
+              <Button
                 onClick={handleJoin}
                 disabled={loading}
-                className="w-full py-4 rounded-xl bg-primary text-primary-foreground font-display font-bold text-lg hover:bg-primary/90 transition-all disabled:opacity-50"
+                size="lg"
+                className="w-full font-display font-bold text-lg btn-neon"
               >
                 {loading ? "Đang tham gia..." : "⭐ THAM GIA"}
-              </button>
+              </Button>
 
-              <button onClick={() => setStep("code")} className="w-full text-sm text-muted-foreground hover:text-foreground underline font-display">
+              <Button
+                variant="ghost"
+                onClick={() => setStep("code")}
+                className="w-full text-sm text-muted-foreground hover:text-foreground font-display"
+              >
                 ← Quay lại
-              </button>
+              </Button>
             </div>
           </>
         )}

@@ -1,4 +1,5 @@
 import { TeamData } from "@/types/game";
+import { Button } from "@/components/ui/button";
 
 interface EliminationScreenProps {
   eliminatedTeam: TeamData;
@@ -27,12 +28,13 @@ export function EliminationScreen({ eliminatedTeam, stageName, onContinue }: Eli
           Xe tăng đã dừng lại... Cuộc hành trình kết thúc tại đây.
         </p>
 
-        <button
+        <Button
           onClick={onContinue}
-          className="px-8 py-3 rounded-lg bg-primary text-primary-foreground font-display font-bold text-lg hover:bg-primary/90 transition-colors"
+          size="lg"
+          className="font-display text-lg px-8 btn-neon"
         >
           Tiếp tục →
-        </button>
+        </Button>
       </div>
     </div>
   );

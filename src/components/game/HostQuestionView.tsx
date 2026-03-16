@@ -1,4 +1,5 @@
 import { Question, TeamData, TeamAnswer } from "@/types/game";
+import { Button } from "@/components/ui/button";
 
 interface HostQuestionViewProps {
   question: Question;
@@ -125,19 +126,21 @@ export function HostQuestionView({
 
           {/* Control buttons */}
           {!isShowingAnswer ? (
-            <button
+            <Button
               onClick={onShowAnswer}
-              className="w-full py-3 rounded-lg bg-gold text-foreground font-display font-bold text-lg hover:bg-gold/90 transition-colors"
+              size="lg"
+              className="w-full font-display font-bold text-lg bg-gold text-foreground hover:bg-gold/90 btn-neon"
             >
               Hiện đáp án
-            </button>
+            </Button>
           ) : (
-            <button
+            <Button
               onClick={onNext}
-              className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-display font-bold text-lg hover:bg-primary/90 transition-colors"
+              size="lg"
+              className="w-full font-display font-bold text-lg btn-neon"
             >
               {questionIndex + 1 < totalQuestions ? "Câu tiếp theo →" : "Kết thúc chặng →"}
-            </button>
+            </Button>
           )}
         </div>
       </div>

@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import { toast } from "@/hooks/use-toast";
 import { VideoTransition } from "@/components/game/VideoTransition";
 import tankIcon from "@/assets/tank-icon.png";
+import { Button } from "@/components/ui/button";
 
 const TeamGamePage = () => {
   const { roomCode } = useParams<{ roomCode: string }>();
@@ -63,7 +64,9 @@ const TeamGamePage = () => {
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="text-center">
           <p className="font-display text-xl text-primary mb-4">Không tìm thấy phòng</p>
-          <button onClick={() => navigate("/")} className="text-muted-foreground underline">Quay lại</button>
+          <Button variant="ghost" onClick={() => navigate("/")} className="text-muted-foreground hover:text-foreground">
+            Quay lại
+          </Button>
         </div>
       </div>
     );
@@ -74,7 +77,9 @@ const TeamGamePage = () => {
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <div className="text-center">
           <p className="font-display text-xl text-primary mb-4">Bạn chưa tham gia phòng này</p>
-          <button onClick={() => navigate("/join")} className="px-6 py-3 rounded-lg bg-primary text-primary-foreground font-display font-bold">Tham gia</button>
+          <Button onClick={() => navigate("/join")} size="lg" className="font-display font-bold px-6 btn-neon">
+            Tham gia
+          </Button>
         </div>
       </div>
     );
@@ -198,11 +203,12 @@ const TeamGamePage = () => {
               const isCorrect = idx === question.correctAnswer;
               const isMyAnswer = myAnswer?.answer_index === idx;
               return (
-                <button
+                <Button
                   key={idx}
+                  variant="outline"
                   disabled={!!myAnswer || isShowingAnswer}
                   onClick={() => handleAnswer(idx)}
-                  className={`text-left p-4 rounded-lg border-2 font-body font-medium transition-all duration-200 ${
+                  className={`justify-start text-left p-4 rounded-lg border-2 font-body font-medium transition-all duration-200 ${
                     isShowingAnswer
                       ? isCorrect
                         ? "border-army bg-army/10 text-army"
@@ -213,14 +219,14 @@ const TeamGamePage = () => {
                         ? "border-primary bg-primary/10"
                         : !!myAnswer
                           ? "border-muted text-muted-foreground cursor-not-allowed"
-                          : "border-border hover:border-primary hover:bg-primary/5 cursor-pointer active:scale-95"
+                          : "border-border hover:border-primary hover:bg-primary/5 cursor-pointer active:scale-95 btn-neon"
                   }`}
                 >
                   <span className="font-display font-bold text-primary mr-2">{letterLabels[idx]}.</span>
                   {option}
                   {isShowingAnswer && isCorrect && <span className="float-right text-xl">✅</span>}
                   {isShowingAnswer && isMyAnswer && !isCorrect && <span className="float-right text-xl">❌</span>}
-                </button>
+                </Button>
               );
             })}
           </div>

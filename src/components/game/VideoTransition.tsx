@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
+import tankVideo from "@/assets/Xe_tang_DDL.mp4";
 
 interface VideoTransitionProps {
   onComplete: () => void;
   duration?: number;
 }
-
-const PLACEHOLDER_VIDEO = "https://www.w3schools.com/html/mov_bbb.mp4";
 
 export function VideoTransition({ onComplete, duration = 7 }: VideoTransitionProps) {
   const [countdown, setCountdown] = useState(duration);
@@ -28,10 +27,11 @@ export function VideoTransition({ onComplete, duration = 7 }: VideoTransitionPro
     <div className="fixed inset-0 z-50 bg-foreground/90 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in-up">
       <div className="relative w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl border-2 border-gold">
         <video
-          src={PLACEHOLDER_VIDEO}
+          src={tankVideo}
           autoPlay
           muted
           playsInline
+          loop
           className="w-full aspect-video object-cover"
         />
         <div className="absolute top-3 right-3 bg-foreground/70 text-primary-foreground px-3 py-1 rounded-full font-display font-bold text-sm">
