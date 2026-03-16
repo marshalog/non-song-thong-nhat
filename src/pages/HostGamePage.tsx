@@ -9,6 +9,7 @@ import { ScoreboardOverlay } from "@/components/game/ScoreboardOverlay";
 import { EliminationScreen } from "@/components/game/EliminationScreen";
 import { VictoryScreen } from "@/components/game/VictoryScreen";
 import { HostControlPanel } from "@/components/game/HostControlPanel";
+import { VideoTransition } from "@/components/game/VideoTransition";
 import tankIcon from "@/assets/tank-icon.png";
 
 const HostGamePage = () => {
