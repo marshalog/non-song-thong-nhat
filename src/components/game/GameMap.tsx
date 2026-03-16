@@ -26,7 +26,7 @@ export function GameMap({ teams, currentStage, animateToNext }: GameMapProps) {
     if (animateToNext) {
       const timer = setTimeout(() => {
         setAnimatedStage(currentStage);
-      }, 500);
+      }, 50);
       return () => clearTimeout(timer);
     } else {
       setAnimatedStage(currentStage);
@@ -46,7 +46,7 @@ export function GameMap({ teams, currentStage, animateToNext }: GameMapProps) {
         >
           <div
             className={`w-10 h-10 rounded-full flex items-center justify-center font-display font-black text-lg border-3 ${
-              idx <= currentStage ? "bg-gold text-foreground star-glow border-gold-dark" : "bg-muted text-muted-foreground border-border"
+              idx <= currentStage ? "bg-gold text-foreground border-gold-dark" : "bg-muted text-muted-foreground border-border"
             }`}
           >
             {idx + 1}
@@ -71,7 +71,7 @@ export function GameMap({ teams, currentStage, animateToNext }: GameMapProps) {
               left: `${pos.x + offset}%`,
               top: `${pos.y + 10 + i * 4}%`,
               transform: "translate(-50%, -50%)",
-              transition: "left 2s ease-in-out, top 2s ease-in-out",
+              transition: "left 5s ease-in-out, top 5s ease-in-out",
             }}
           >
             <div className="flex flex-col items-center">

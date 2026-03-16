@@ -119,7 +119,7 @@ const TeamGamePage = () => {
         <div className="text-center animate-fade-in-up">
           <div className="text-6xl mb-4">{myTeam.icon}</div>
           <h1 className="font-display text-3xl font-black mb-2" style={{ color: myTeam.color }}>{myTeam.name}</h1>
-          <p className="text-muted-foreground font-display mb-6">Phòng: <span className="font-bold text-gold">{roomCode}</span></p>
+          <p className="text-muted-foreground font-display mb-6">Phòng: <span className="font-bold text-foreground">{roomCode}</span></p>
 
           <div className="tank-cabin max-w-sm mx-auto mb-6" style={{ borderLeftColor: myTeam.color, borderLeftWidth: 4 }}>
             <p className="text-primary-foreground text-sm font-display">
@@ -171,7 +171,7 @@ const TeamGamePage = () => {
             <span className="text-2xl">{myTeam.icon}</span>
             <span className="font-display font-bold text-sm" style={{ color: myTeam.color }}>{myTeam.name}</span>
           </div>
-          <span className="font-display text-sm text-gold font-bold">{stage?.name}</span>
+          <span className="font-display text-sm text-foreground font-bold">{stage?.name}</span>
         </div>
 
         {/* Timer */}
@@ -233,7 +233,7 @@ const TeamGamePage = () => {
 
           {myAnswer && !isShowingAnswer && (
             <div className="mt-4 text-center">
-              <p className="font-display text-sm text-gold font-bold animate-fade-in-up">✅ Đã gửi đáp án! Đang chờ các đội khác...</p>
+              <p className="font-display text-sm text-foreground font-bold animate-fade-in-up">✅ Đã gửi đáp án! Đang chờ các đội khác...</p>
             </div>
           )}
         </div>
@@ -260,7 +260,7 @@ const TeamGamePage = () => {
         {room.phase === "victory" ? (
           <div>
             <div className="text-8xl mb-4">🏆</div>
-            <h1 className="font-display text-4xl font-black text-gold mb-2">CHIẾN THẮNG!</h1>
+            <h1 className="font-display text-4xl font-black text-foreground mb-2">CHIẾN THẮNG!</h1>
             <p className="text-muted-foreground font-display">Giải phóng miền Nam, thống nhất đất nước!</p>
           </div>
         ) : (
@@ -271,7 +271,7 @@ const TeamGamePage = () => {
               {room.phase === "map-transition" && "🗺️ Đang di chuyển trên bản đồ..."}
               {room.phase === "stage-result" && "📊 Đang xem kết quả chặng..."}
             </p>
-            <p className="text-gold font-display font-bold mt-2">Điểm: {myTeam.score}</p>
+            <p className="text-foreground font-display font-bold mt-2">Điểm: {myTeam.score}</p>
           </div>
         )}
       </div>

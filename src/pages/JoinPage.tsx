@@ -122,7 +122,7 @@ const JoinPage = () => {
         ) : (
           <>
             <h1 className="font-display text-2xl font-black text-primary text-center mb-1">THIẾT LẬP ĐỘI</h1>
-            <p className="text-sm text-muted-foreground text-center mb-6">Phòng: <span className="font-bold text-gold">{roomCode}</span></p>
+            <p className="text-sm text-muted-foreground text-center mb-6">Phòng: <span className="font-bold text-foreground">{roomCode}</span></p>
 
             <div className="space-y-5">
               {/* Team name */}

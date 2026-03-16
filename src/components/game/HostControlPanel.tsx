@@ -14,13 +14,13 @@ export function HostControlPanel({ room, teams, answers, stages }: HostControlPa
   return (
     <div className="mb-6 animate-fade-in-up">
       <div className="tank-cabin">
-        <h3 className="font-display text-lg font-bold text-gold mb-4">📊 BẢNG ĐIỀU KHIỂN ADMIN</h3>
+        <h3 className="font-display text-lg font-bold text-foreground mb-4">📊 BẢNG ĐIỀU KHIỂN ADMIN</h3>
 
         {/* Room info */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
           <div className="bg-secondary/50 rounded-lg p-3">
             <p className="text-[10px] text-primary-foreground/60 font-display">Mã phòng</p>
-            <p className="font-display font-bold text-gold text-lg">{room.room_code}</p>
+            <p className="font-display font-bold text-foreground text-lg">{room.room_code}</p>
           </div>
           <div className="bg-secondary/50 rounded-lg p-3">
             <p className="text-[10px] text-primary-foreground/60 font-display">Giai đoạn</p>
@@ -50,7 +50,7 @@ export function HostControlPanel({ room, teams, answers, stages }: HostControlPa
                   <span className="font-display font-bold text-primary-foreground text-xs truncate">{team.name}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gold font-display font-bold text-lg">{team.score}</span>
+                  <span className="text-foreground font-display font-bold text-lg">{team.score}</span>
                   {team.eliminated && <span className="text-[10px] text-primary-foreground/50">❌ Loại</span>}
                 </div>
               </div>
@@ -86,7 +86,7 @@ export function HostControlPanel({ room, teams, answers, stages }: HostControlPa
                         if (!ans) return <td key={t.id} className="text-center py-1.5 px-2 text-primary-foreground/30">—</td>;
                         const isCorrect = ans.answer_index === q.correctAnswer;
                         return (
-                          <td key={t.id} className={`text-center py-1.5 px-2 font-bold ${isCorrect ? "text-gold" : "text-primary"}`}>
+                          <td key={t.id} className={`text-center py-1.5 px-2 font-bold ${isCorrect ? "text-foreground" : "text-primary"}`}>
                             {letterLabels[ans.answer_index]} {isCorrect ? "✅" : "❌"} ({ans.time_elapsed.toFixed(1)}s)
                           </td>
                         );

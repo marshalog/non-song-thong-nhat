@@ -8,7 +8,7 @@ interface ScoreboardOverlayProps {
 }
 
 export function ScoreboardOverlay({ teams, stageName, onEliminate }: ScoreboardOverlayProps) {
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(5);
   const activeTeams = [...teams].filter(t => !t.eliminated).sort((a, b) => b.score - a.score);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export function ScoreboardOverlay({ teams, stageName, onEliminate }: ScoreboardO
       <div className="question-card max-w-lg w-full animate-fade-in-up">
         <h2 className="font-display text-3xl font-black text-primary text-center mb-1">📊 BẢNG ĐIỂM</h2>
         <p className="font-display text-sm text-muted-foreground text-center mb-2">{stageName}</p>
-        <p className="font-display text-xs text-gold text-center mb-6">Tự động tiếp tục sau {countdown}s</p>
+        <p className="font-display text-xs text-foreground text-center mb-6">Tự động tiếp tục sau {countdown}s</p>
 
         <div className="space-y-3 mb-6">
           {activeTeams.map((team, idx) => (

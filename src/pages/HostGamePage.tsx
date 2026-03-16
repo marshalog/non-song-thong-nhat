@@ -132,8 +132,8 @@ const HostGamePage = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <h1 className="font-display text-lg font-bold text-primary-foreground">⭐ HÀNH TRÌNH THỐNG NHẤT</h1>
           <div className="flex items-center gap-4">
-            <span className="font-display text-sm text-gold font-bold">{stage?.name}</span>
-            <span className="bg-gold/20 text-gold px-3 py-1 rounded-full text-xs font-display font-bold">
+            <span className="font-display text-sm text-foreground font-bold">{stage?.name}</span>
+            <span className="bg-gold/20 text-foreground px-3 py-1 rounded-full text-xs font-display font-bold">
               Phòng: {roomCode}
             </span>
             <Button
@@ -247,7 +247,7 @@ const HostGamePage = () => {
           <div className="space-y-6">
             <GameMap teams={teams} currentStage={room.current_stage} animateToNext />
             <div className="text-center">
-              <p className="font-display text-xl text-gold font-bold mb-6 animate-fade-in-up">
+              <p className="font-display text-xl text-foreground font-bold mb-6 animate-fade-in-up">
                 🗺️ Các xe tăng đang di chuyển...
               </p>
               <Button

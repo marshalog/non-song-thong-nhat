@@ -18,7 +18,7 @@ export function VictoryScreen({ winner, onRestart }: VictoryScreenProps) {
           <img src={victoryFlag} alt="Cờ Việt Nam" className="w-40 h-40 mx-auto object-contain" />
         </div>
 
-        <h1 className="font-display text-5xl md:text-6xl font-black text-gold mb-2" style={{ textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>
+        <h1 className="font-display text-5xl md:text-6xl font-black text-foreground mb-2" style={{ textShadow: "2px 2px 8px rgba(0,0,0,0.5)" }}>
           CHIẾN THẮNG!
         </h1>
         <p className="font-display text-xl text-primary-foreground/90 mb-8">
