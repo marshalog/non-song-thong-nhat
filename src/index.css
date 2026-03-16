@@ -153,6 +153,7 @@
 }
 
 .animate-tank-move { animation: tank-move 1.5s ease-in-out; }
+.animate-tank-rumble { animation: tank-rumble 0.3s ease-in-out infinite; }
 .animate-flag-raise { animation: flag-raise 2s ease-out forwards; }
 .animate-screen-shake { animation: screen-shake 0.5s ease-in-out; }
 .animate-fade-in-up { animation: fade-in-up 0.5s ease-out forwards; }

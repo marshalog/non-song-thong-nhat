@@ -235,6 +235,15 @@ const TeamGamePage = () => {
     );
   }
 
+  // Video transition - show to players too
+  if (room.phase === "video-transition") {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
+        <VideoTransition onComplete={() => {}} duration={7} />
+      </div>
+    );
+  }
+
   // Scoreboard / elimination / map / victory - show waiting state
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
