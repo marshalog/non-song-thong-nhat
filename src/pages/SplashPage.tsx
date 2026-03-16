@@ -14,7 +14,7 @@ const SplashPage = () => {
       {/* Logo animation */}
       <div className="relative z-10 text-center animate-fade-in-up">
         <div className="mb-6 flex justify-center">
-          <img src={logoGame} alt="Non Sông Thống Nhất" className="w-64 md:w-80 object-contain animate-flag-raise" />
+          <img src={logoGame} alt="Non Sông Thống Nhất" className="w-80 md:w-[28rem] object-contain animate-flag-raise" />
         </div>
 
         <p className="font-display text-lg text-muted-foreground mb-2">

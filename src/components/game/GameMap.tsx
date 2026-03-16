@@ -78,7 +78,7 @@ export function GameMap({ teams, currentStage, animateToNext }: GameMapProps) {
               <img
                 src={tankIcon}
                 alt="tank"
-                className={`w-16 h-12 object-contain ${!team.eliminated && animateToNext ? "animate-tank-rumble" : ""}`}
+                className={`w-28 h-20 object-contain ${!team.eliminated && animateToNext ? "animate-tank-rumble" : ""}`}
                 style={{ filter: team.eliminated ? "grayscale(1)" : "none" }}
               />
               <span
