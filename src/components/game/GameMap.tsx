@@ -1,7 +1,7 @@
 import { TeamData } from "@/types/game";
 import { useState, useEffect } from "react";
 import tankIcon from "@/assets/tank-icon.png";
-import vietnamMap from "@/assets/vietnam-map.jpg";
+import gameMap from "@/assets/map.png";
 
 interface GameMapProps {
   teams: TeamData[];
@@ -9,10 +9,12 @@ interface GameMapProps {
   animateToNext?: boolean;
 }
 
+// Positions mapped to the new map image
+// Stage 1: Flag position (bottom-left), Stage 2: Gate (middle), Stage 3: Independence Palace (top)
 const stagePositions = [
-  { x: 18, y: 28, label: "Chặng 1: Tiến Công" },
-  { x: 48, y: 48, label: "Chặng 2: Phá Cổng" },
-  { x: 78, y: 68, label: "Chặng 3: Cắm Cờ" },
+  { x: 22, y: 82, label: "Chặng 1: Tiến Công" },
+  { x: 55, y: 48, label: "Chặng 2: Phá Cổng" },
+  { x: 42, y: 12, label: "Chặng 3: Cắm Cờ" },
 ];
 
 export function GameMap({ teams, currentStage, animateToNext }: GameMapProps) {
@@ -31,7 +33,7 @@ export function GameMap({ teams, currentStage, animateToNext }: GameMapProps) {
 
   return (
     <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden shadow-2xl border-2 border-border">
-      <img src={vietnamMap} alt="Bản đồ Việt Nam" className="w-full h-full object-cover" />
+      <img src={gameMap} alt="Bản đồ hành quân" className="w-full h-full object-cover" />
 
       {/* Stage markers */}
       {stagePositions.map((pos, idx) => (
@@ -57,7 +59,7 @@ export function GameMap({ teams, currentStage, animateToNext }: GameMapProps) {
       {teams.map((team, i) => {
         const stageIdx = team.eliminated ? Math.max(0, animatedStage - 1) : animatedStage;
         const pos = stagePositions[Math.min(stageIdx, stagePositions.length - 1)];
-        const offset = (i - 1.5) * 5;
+        const offset = (i - 1.5) * 6;
 
         return (
           <div
@@ -65,7 +67,7 @@ export function GameMap({ teams, currentStage, animateToNext }: GameMapProps) {
             className={`absolute ${team.eliminated ? "eliminated" : ""}`}
             style={{
               left: `${pos.x + offset}%`,
-              top: `${pos.y + 12 + i * 3}%`,
+              top: `${pos.y + 10 + i * 4}%`,
               transform: "translate(-50%, -50%)",
               transition: "left 2s ease-in-out, top 2s ease-in-out",
             }}
@@ -74,11 +76,11 @@ export function GameMap({ teams, currentStage, animateToNext }: GameMapProps) {
               <img
                 src={tankIcon}
                 alt="tank"
-                className={`w-12 h-8 object-contain ${!team.eliminated && animateToNext ? "animate-tank-rumble" : ""}`}
+                className={`w-16 h-12 object-contain ${!team.eliminated && animateToNext ? "animate-tank-rumble" : ""}`}
                 style={{ filter: team.eliminated ? "grayscale(1)" : "none" }}
               />
               <span
-                className="text-[9px] font-display font-bold px-1.5 py-0.5 rounded mt-0.5 flex items-center gap-0.5"
+                className="text-[10px] font-display font-bold px-2 py-0.5 rounded mt-0.5 flex items-center gap-0.5"
                 style={{ backgroundColor: team.color, color: "#fff" }}
               >
                 {team.icon} {team.name}
