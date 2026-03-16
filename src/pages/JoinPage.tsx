@@ -107,7 +107,7 @@ const JoinPage = () => {
                 variant="secondary"
                 className="w-full font-display font-bold text-lg btn-neon"
               >
-                {loading ? "Đang kiểm tra..." : "🚀 TIẾP TỤC"}
+                {loading ? "Đang kiểm tra..." : "TIẾP TỤC"}
               </Button>
 
               <Button
@@ -115,7 +115,7 @@ const JoinPage = () => {
                 onClick={() => navigate("/")}
                 className="w-full text-sm text-muted-foreground hover:text-foreground font-display"
               >
-                ← Quay lại
+                Quay lại
               </Button>
             </div>
           </>
@@ -199,7 +199,7 @@ const JoinPage = () => {
                 size="lg"
                 className="w-full font-display font-bold text-lg btn-neon"
               >
-                {loading ? "Đang tham gia..." : "⭐ THAM GIA"}
+                {loading ? "Đang tham gia..." : "THAM GIA"}
               </Button>
 
               <Button
@@ -207,7 +207,7 @@ const JoinPage = () => {
                 onClick={() => setStep("code")}
                 className="w-full text-sm text-muted-foreground hover:text-foreground font-display"
               >
-                ← Quay lại
+                Quay lại
               </Button>
             </div>
           </>

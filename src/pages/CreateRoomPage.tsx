@@ -71,7 +71,7 @@ const CreateRoomPage = () => {
             size="lg"
             className="w-full font-display font-bold text-lg btn-neon"
           >
-            {loading ? "Đang tạo..." : "⭐ TẠO PHÒNG"}
+            {loading ? "Đang tạo..." : "TẠO PHÒNG"}
           </Button>
 
           <Button
@@ -79,7 +79,7 @@ const CreateRoomPage = () => {
             onClick={() => navigate("/")}
             className="w-full text-sm text-muted-foreground hover:text-foreground font-display"
           >
-            ← Quay lại
+            Quay lại
           </Button>
         </div>
       </div>

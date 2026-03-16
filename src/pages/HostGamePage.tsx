@@ -100,7 +100,7 @@ const HostGamePage = () => {
             onClick={() => navigate("/")}
             className="w-full mt-3 text-sm text-muted-foreground hover:text-foreground font-display"
           >
-            ← Quay lại
+            Quay lại
           </Button>
         </div>
       </div>
@@ -197,7 +197,7 @@ const HostGamePage = () => {
                 size="lg"
                 className="w-full font-display font-bold text-xl btn-neon"
               >
-                ⭐ BẮT ĐẦU {room.current_stage === 0 ? "GAME" : `CHẶNG ${room.current_stage + 1}`}
+                BẮT ĐẦU {room.current_stage === 0 ? "GAME" : `CHẶNG ${room.current_stage + 1}`}
               </Button>
             </div>
           </div>
@@ -255,7 +255,7 @@ const HostGamePage = () => {
                 size="lg"
                 className="font-display font-bold text-lg px-8 btn-neon"
               >
-                Tiếp tục chặng tiếp theo →
+                Tiếp tục chặng tiếp theo
               </Button>
             </div>
           </div>

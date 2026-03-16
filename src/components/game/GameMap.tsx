@@ -14,9 +14,9 @@ interface GameMapProps {
 // Positions precisely matched to map.png landmarks
 // Stage 1: Red flag (bottom-left), Stage 2: Gate (middle-right), Stage 3: Independence Palace (top-center)
 const stagePositions = [
-  { x: 20, y: 78, label: "Chặng 1: Tiến Công" },
-  { x: 58, y: 45, label: "Chặng 2: Phá Cổng" },
-  { x: 40, y: 10, label: "Chặng 3: Cắm Cờ" },
+  { x: 14, y: 78, label: "Chặng 1: Lá cờ" },
+  { x: 43, y: 33, label: "Chặng 2: Cánh cổng" },
+  { x: 50, y: 9, label: "Chặng 3: Dinh Độc Lập" },
 ];
 
 export function GameMap({ teams, currentStage, animateToNext }: GameMapProps) {

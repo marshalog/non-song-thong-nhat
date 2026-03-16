@@ -33,7 +33,7 @@ const SplashPage = () => {
             size="lg"
             className="font-display text-xl min-w-[220px] btn-neon"
           >
-            🎮 TẠO PHÒNG
+            TẠO PHÒNG
           </Button>
           <Button
             onClick={() => navigate("/join")}
@@ -41,7 +41,7 @@ const SplashPage = () => {
             variant="secondary"
             className="font-display text-xl min-w-[220px] btn-neon"
           >
-            🚀 THAM GIA
+            THAM GIA
           </Button>
         </div>
 
@@ -50,7 +50,7 @@ const SplashPage = () => {
           variant="ghost"
           className="mt-6 font-display text-sm text-muted-foreground hover:text-foreground"
         >
-          📖 Hướng dẫn chơi game
+          Hướng dẫn chơi game
         </Button>
       </div>
 

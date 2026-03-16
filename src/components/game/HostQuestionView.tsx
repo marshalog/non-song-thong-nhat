@@ -139,7 +139,7 @@ export function HostQuestionView({
               size="lg"
               className="w-full font-display font-bold text-lg btn-neon"
             >
-              {questionIndex + 1 < totalQuestions ? "Câu tiếp theo →" : "Kết thúc chặng →"}
+              {questionIndex + 1 < totalQuestions ? "Câu tiếp theo" : "Kết thúc chặng"}
             </Button>
           )}
         </div>

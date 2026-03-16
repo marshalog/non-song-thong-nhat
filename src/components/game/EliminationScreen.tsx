@@ -33,7 +33,7 @@ export function EliminationScreen({ eliminatedTeam, stageName, onContinue }: Eli
           size="lg"
           className="font-display text-lg px-8 btn-neon"
         >
-          Tiếp tục →
+          Tiếp tục
         </Button>
       </div>
     </div>
