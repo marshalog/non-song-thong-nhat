@@ -1,10 +1,12 @@
 import { TeamData } from "@/types/game";
+import { useState, useEffect } from "react";
 import tankIcon from "@/assets/tank-icon.png";
 import vietnamMap from "@/assets/vietnam-map.jpg";
 
 interface GameMapProps {
   teams: TeamData[];
   currentStage: number;
+  animateToNext?: boolean;
 }
 
 const stagePositions = [
@@ -13,7 +15,20 @@ const stagePositions = [
   { x: 78, y: 68, label: "Chặng 3: Cắm Cờ" },
 ];
 
-export function GameMap({ teams, currentStage }: GameMapProps) {
+export function GameMap({ teams, currentStage, animateToNext }: GameMapProps) {
+  const [animatedStage, setAnimatedStage] = useState(animateToNext ? Math.max(0, currentStage - 1) : currentStage);
+
+  useEffect(() => {
+    if (animateToNext) {
+      const timer = setTimeout(() => {
+        setAnimatedStage(currentStage);
+      }, 500);
+      return () => clearTimeout(timer);
+    } else {
+      setAnimatedStage(currentStage);
+    }
+  }, [animateToNext, currentStage]);
+
   return (
     <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden shadow-2xl border-2 border-border">
       <img src={vietnamMap} alt="Bản đồ Việt Nam" className="w-full h-full object-cover" />
@@ -40,22 +55,28 @@ export function GameMap({ teams, currentStage }: GameMapProps) {
 
       {/* Tank positions */}
       {teams.map((team, i) => {
-        const stageIdx = team.eliminated ? Math.max(0, currentStage - 1) : currentStage;
+        const stageIdx = team.eliminated ? Math.max(0, animatedStage - 1) : animatedStage;
         const pos = stagePositions[Math.min(stageIdx, stagePositions.length - 1)];
         const offset = (i - 1.5) * 5;
 
         return (
           <div
             key={team.id}
-            className={`absolute transition-all duration-1000 ease-out ${team.eliminated ? "eliminated" : "animate-tank-move"}`}
+            className={`absolute ${team.eliminated ? "eliminated" : ""}`}
             style={{
               left: `${pos.x + offset}%`,
               top: `${pos.y + 12 + i * 3}%`,
               transform: "translate(-50%, -50%)",
+              transition: "left 2s ease-in-out, top 2s ease-in-out",
             }}
           >
             <div className="flex flex-col items-center">
-              <img src={tankIcon} alt="tank" className="w-12 h-8 object-contain" style={{ filter: team.eliminated ? "grayscale(1)" : "none" }} />
+              <img
+                src={tankIcon}
+                alt="tank"
+                className={`w-12 h-8 object-contain ${!team.eliminated && animateToNext ? "animate-tank-rumble" : ""}`}
+                style={{ filter: team.eliminated ? "grayscale(1)" : "none" }}
+              />
               <span
                 className="text-[9px] font-display font-bold px-1.5 py-0.5 rounded mt-0.5 flex items-center gap-0.5"
                 style={{ backgroundColor: team.color, color: "#fff" }}

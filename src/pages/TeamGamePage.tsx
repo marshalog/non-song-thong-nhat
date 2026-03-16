@@ -4,6 +4,7 @@ import { stages } from "@/data/questions";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "@/hooks/use-toast";
+import { VideoTransition } from "@/components/game/VideoTransition";
 import tankIcon from "@/assets/tank-icon.png";
 
 const TeamGamePage = () => {
@@ -230,6 +231,15 @@ const TeamGamePage = () => {
             </div>
           )}
         </div>
+      </div>
+    );
+  }
+
+  // Video transition - show to players too
+  if (room.phase === "video-transition") {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
+        <VideoTransition onComplete={() => {}} duration={7} />
       </div>
     );
   }

@@ -9,6 +9,7 @@ import { ScoreboardOverlay } from "@/components/game/ScoreboardOverlay";
 import { EliminationScreen } from "@/components/game/EliminationScreen";
 import { VictoryScreen } from "@/components/game/VictoryScreen";
 import { HostControlPanel } from "@/components/game/HostControlPanel";
+import { VideoTransition } from "@/components/game/VideoTransition";
 import tankIcon from "@/assets/tank-icon.png";
 
 const HostGamePage = () => {
@@ -224,14 +225,19 @@ const HostGamePage = () => {
           <EliminationScreen
             eliminatedTeam={lastEliminated}
             stageName={stage.name}
-            onContinue={hostActions.showMapTransition}
+            onContinue={hostActions.showVideoTransition}
           />
+        )}
+
+        {/* Video transition */}
+        {room.phase === "video-transition" && (
+          <VideoTransition onComplete={hostActions.showMapTransition} duration={7} />
         )}
 
         {/* Map transition */}
         {room.phase === "map-transition" && (
           <div className="space-y-6">
-            <GameMap teams={teams} currentStage={room.current_stage} />
+            <GameMap teams={teams} currentStage={room.current_stage} animateToNext />
             <div className="text-center">
               <p className="font-display text-xl text-gold font-bold mb-6 animate-fade-in-up">
                 🗺️ Các xe tăng đang di chuyển...

@@ -71,6 +71,10 @@ export function useHostActions(room: RoomData | null, teams: TeamData[], answers
     await updateRoom({ phase: "elimination" });
   }, [room, teams, updateRoom]);
 
+  const showVideoTransition = useCallback(async () => {
+    await updateRoom({ phase: "video-transition" });
+  }, [updateRoom]);
+
   const showMapTransition = useCallback(async () => {
     await updateRoom({ phase: "map-transition" });
   }, [updateRoom]);
@@ -104,6 +108,7 @@ export function useHostActions(room: RoomData | null, teams: TeamData[], answers
     showAnswer,
     nextQuestion,
     eliminateLowest,
+    showVideoTransition,
     showMapTransition,
     nextStage,
   };
