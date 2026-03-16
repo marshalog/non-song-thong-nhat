@@ -11,10 +11,12 @@ interface GameMapProps {
 
 // Positions mapped to the new map image
 // Stage 1: Flag position (bottom-left), Stage 2: Gate (middle), Stage 3: Independence Palace (top)
+// Positions precisely matched to map.png landmarks
+// Stage 1: Red flag (bottom-left), Stage 2: Gate (middle-right), Stage 3: Independence Palace (top-center)
 const stagePositions = [
-  { x: 22, y: 82, label: "Chặng 1: Tiến Công" },
-  { x: 55, y: 48, label: "Chặng 2: Phá Cổng" },
-  { x: 42, y: 12, label: "Chặng 3: Cắm Cờ" },
+  { x: 20, y: 78, label: "Chặng 1: Tiến Công" },
+  { x: 58, y: 45, label: "Chặng 2: Phá Cổng" },
+  { x: 40, y: 10, label: "Chặng 3: Cắm Cờ" },
 ];
 
 export function GameMap({ teams, currentStage, animateToNext }: GameMapProps) {
@@ -76,7 +78,7 @@ export function GameMap({ teams, currentStage, animateToNext }: GameMapProps) {
               <img
                 src={tankIcon}
                 alt="tank"
-                className={`w-16 h-12 object-contain ${!team.eliminated && animateToNext ? "animate-tank-rumble" : ""}`}
+                className={`w-28 h-20 object-contain ${!team.eliminated && animateToNext ? "animate-tank-rumble" : ""}`}
                 style={{ filter: team.eliminated ? "grayscale(1)" : "none" }}
               />
               <span
