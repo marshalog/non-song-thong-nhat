@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import tankIcon from "@/assets/tank-icon.png";
-import victoryFlag from "@/assets/victory-flag.png";
+import logoGame from "@/assets/logo_game.png";
 
 const SplashPage = () => {
   const navigate = useNavigate();
@@ -15,23 +14,15 @@ const SplashPage = () => {
       {/* Logo animation */}
       <div className="relative z-10 text-center animate-fade-in-up">
         <div className="mb-6 flex justify-center">
-          <img src={victoryFlag} alt="Cờ" className="w-28 h-28 object-contain animate-flag-raise" />
+          <img src={logoGame} alt="Non Sông Thống Nhất" className="w-64 md:w-80 object-contain animate-flag-raise" />
         </div>
 
-        <h1 className="font-display text-5xl md:text-7xl font-black text-primary mb-3" style={{ textShadow: "2px 2px 8px rgba(0,0,0,0.2)" }}>
-          HÀNH TRÌNH
-        </h1>
-        <h1 className="font-display text-4xl md:text-6xl font-black text-gold mb-4" style={{ textShadow: "2px 2px 8px rgba(0,0,0,0.2)" }}>
-          THỐNG NHẤT
-        </h1>
         <p className="font-display text-lg text-muted-foreground mb-2">
           30/4/1975 — Giải phóng miền Nam, thống nhất đất nước
         </p>
 
         <div className="flex items-center justify-center gap-3 mb-10 mt-4">
-          <img src={tankIcon} alt="tank" className="w-10 h-10 object-contain animate-tank-move" />
           <span className="text-sm text-muted-foreground font-display">⭐ ⭐ ⭐</span>
-          <img src={tankIcon} alt="tank" className="w-10 h-10 object-contain animate-tank-move" style={{ animationDelay: "0.5s" }} />
         </div>
 
         {/* Buttons */}
