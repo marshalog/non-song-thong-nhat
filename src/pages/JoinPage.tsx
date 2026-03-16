@@ -45,6 +45,10 @@ const JoinPage = () => {
       return;
     }
 
+    // Randomize a starting color; player can still change it on the setup screen
+    const randomColor = TEAM_COLORS[Math.floor(Math.random() * TEAM_COLORS.length)];
+    setSelectedColor(randomColor);
+
     setRoomId(data.id);
     setStep("setup");
     setLoading(false);

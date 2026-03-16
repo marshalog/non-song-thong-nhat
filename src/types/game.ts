@@ -48,18 +48,12 @@ export interface TeamAnswer {
 }
 
 export const TEAM_ICONS = [
-  { icon: "⭐", label: "Ngôi sao" },
-  { icon: "🔥", label: "Lửa" },
-  { icon: "🏆", label: "Cúp vàng" },
-  { icon: "⚔️", label: "Kiếm" },
-  { icon: "🛡️", label: "Khiên" },
-  { icon: "🚀", label: "Tên lửa" },
-  { icon: "🎯", label: "Mục tiêu" },
-  { icon: "💪", label: "Sức mạnh" },
-  { icon: "🦅", label: "Đại bàng" },
-  { icon: "🐉", label: "Rồng" },
-  { icon: "🌟", label: "Sao sáng" },
-  { icon: "🎖️", label: "Huân chương" },
+  { icon: "XT", label: "Xe tăng" },
+  { icon: "XB", label: "Xe bọc thép" },
+  { icon: "PC", label: "Phi cơ chiến đấu" },
+  { icon: "TT", label: "Trực thăng" },
+  { icon: "VN", label: "Cờ Việt Nam" },
+  { icon: "MT", label: "Cờ Mặt trận Giải phóng" },
 ];
 
 export const TEAM_COLORS = [
