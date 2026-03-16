@@ -108,6 +108,7 @@ export function useHostActions(room: RoomData | null, teams: TeamData[], answers
     showAnswer,
     nextQuestion,
     eliminateLowest,
+    showVideoTransition,
     showMapTransition,
     nextStage,
   };
