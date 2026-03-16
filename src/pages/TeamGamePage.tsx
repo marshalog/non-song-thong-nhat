@@ -4,6 +4,7 @@ import { stages } from "@/data/questions";
 import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "@/hooks/use-toast";
+import { VideoTransition } from "@/components/game/VideoTransition";
 import tankIcon from "@/assets/tank-icon.png";
 
 const TeamGamePage = () => {
