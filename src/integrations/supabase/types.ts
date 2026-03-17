@@ -24,6 +24,7 @@ export type Database = {
           phase: string
           room_code: string
           showing_answer: boolean
+          stage_started_at: string | null
           time_remaining: number
           updated_at: string
         }
@@ -36,6 +37,7 @@ export type Database = {
           phase?: string
           room_code: string
           showing_answer?: boolean
+          stage_started_at?: string | null
           time_remaining?: number
           updated_at?: string
         }
@@ -48,6 +50,7 @@ export type Database = {
           phase?: string
           room_code?: string
           showing_answer?: boolean
+          stage_started_at?: string | null
           time_remaining?: number
           updated_at?: string
         }
@@ -62,6 +65,7 @@ export type Database = {
           room_id: string
           stage: number
           team_id: string
+          text_answer: string | null
           time_elapsed: number
         }
         Insert: {
@@ -72,6 +76,7 @@ export type Database = {
           room_id: string
           stage: number
           team_id: string
+          text_answer?: string | null
           time_elapsed?: number
         }
         Update: {
@@ -82,6 +87,7 @@ export type Database = {
           room_id?: string
           stage?: number
           team_id?: string
+          text_answer?: string | null
           time_elapsed?: number
         }
         Relationships: [
@@ -105,7 +111,9 @@ export type Database = {
         Row: {
           color: string
           created_at: string
+          current_question_index: number
           eliminated: boolean
+          finished_at: string | null
           icon: string
           id: string
           name: string
@@ -116,7 +124,9 @@ export type Database = {
         Insert: {
           color?: string
           created_at?: string
+          current_question_index?: number
           eliminated?: boolean
+          finished_at?: string | null
           icon?: string
           id?: string
           name: string
@@ -127,7 +137,9 @@ export type Database = {
         Update: {
           color?: string
           created_at?: string
+          current_question_index?: number
           eliminated?: boolean
+          finished_at?: string | null
           icon?: string
           id?: string
           name?: string
