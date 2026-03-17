@@ -1,4 +1,7 @@
 import { StageData } from "@/types/game";
+import tbtLeDuan from "@/assets/tbt_leduan.jpg";
+import tbtTruongChinh from "@/assets/tbt-truongchinh.jpg";
+import ttVoVanKiet from "@/assets/tt-vovankiet.jpg";
 
 export const stages: StageData[] = [
   {
@@ -315,21 +318,21 @@ export const stages: StageData[] = [
       {
         id: 35, type: "image-fill-in",
         question: "Đây là ai? Người giữ chức Tổng Bí thư tại Đại hội V.",
-        imageUrl: require("@/assets/tbt_leduan.jpg"),
+        imageUrl: tbtLeDuan,
         correctAnswer: "Lê Duẩn",
         timeLimit: 15,
       },
       {
         id: 36, type: "image-fill-in",
         question: "Đây là ai? Người khởi xướng đổi mới tư duy, giữ chức TBT từ tháng 7/1986.",
-        imageUrl: require("@/assets/tbt-truongchinh.jpg"),
+        imageUrl: tbtTruongChinh,
         correctAnswer: "Trường Chinh",
         timeLimit: 15,
       },
       {
         id: 37, type: "image-fill-in",
         question: "Đây là ai? Bí thư Thành ủy TP.HCM, người tiên phong 'phá rào' kinh tế.",
-        imageUrl: require("@/assets/tt-vovankiet.jpg"),
+        imageUrl: ttVoVanKiet,
         correctAnswer: "Võ Văn Kiệt",
         timeLimit: 15,
       },
