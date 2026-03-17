@@ -392,7 +392,7 @@ const HostGamePage = () => {
 
         {/* Video transition */}
         {room.phase === "video-transition" && (
-          <VideoTransition src={stageEndVideo} onComplete={hostActions.showMapTransition} duration={7} />
+          <VideoTransition src={stageEndVideo} onComplete={hostActions.showMapTransition} />
         )}
 
         {/* Map transition */}

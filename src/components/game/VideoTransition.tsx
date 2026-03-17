@@ -1,21 +1,30 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface VideoTransitionProps {
   src: string;
   onComplete: () => void;
-  duration?: number;
+  loop?: boolean;
 }
 
-export function VideoTransition({ src, onComplete, duration = 7 }: VideoTransitionProps) {
+export function VideoTransition({ src, onComplete, loop = false }: VideoTransitionProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [needsUserGesture, setNeedsUserGesture] = useState(false);
 
-  const endAtMs = useMemo(() => Date.now() + duration * 1000, [duration]);
-
   useEffect(() => {
-    const timeout = setTimeout(() => onComplete(), duration * 1000);
-    return () => clearTimeout(timeout);
-  }, [onComplete, duration]);
+    const el = videoRef.current;
+    if (!el) return;
+
+    const handleEnded = () => onComplete();
+    const handleError = () => onComplete();
+
+    el.addEventListener("ended", handleEnded);
+    el.addEventListener("error", handleError);
+
+    return () => {
+      el.removeEventListener("ended", handleEnded);
+      el.removeEventListener("error", handleError);
+    };
+  }, [onComplete]);
 
   useEffect(() => {
     const el = videoRef.current;
@@ -28,7 +37,7 @@ export function VideoTransition({ src, onComplete, duration = 7 }: VideoTransiti
     if (p && typeof p.catch === "function") {
       p.catch(() => setNeedsUserGesture(true));
     }
-  }, [endAtMs]);
+  }, [src]);
 
   const startWithSound = async () => {
     const el = videoRef.current;
@@ -51,7 +60,8 @@ export function VideoTransition({ src, onComplete, duration = 7 }: VideoTransiti
           src={src}
           autoPlay
           playsInline
-          loop
+          loop={loop}
+          preload="auto"
           className="w-full aspect-video object-cover"
         />
 
