@@ -13,6 +13,9 @@ import { VideoTransition } from "@/components/game/VideoTransition";
 import { StageResultsView } from "@/components/game/StageResultsView";
 import tankIcon from "@/assets/tank-icon.png";
 import logoGame from "@/assets/logo_game.png";
+import c1Video from "@/assets/C1.mp4";
+import c2Video from "@/assets/C2.mp4";
+import c3Video from "@/assets/C3.mp4";
 import { Button } from "@/components/ui/button";
 
 const HostGamePage = () => {
@@ -155,6 +158,7 @@ const HostGamePage = () => {
   const lastEliminated = teams.filter(t => t.eliminated).slice(-1)[0];
   const mcQuestions = getMcQuestions(stage);
   const bonusQuestions = getBonusQuestions(stage);
+  const stageEndVideo = [c1Video, c2Video, c3Video][room.current_stage] ?? c1Video;
 
   return (
     <div className="min-h-screen bg-background">
@@ -388,7 +392,7 @@ const HostGamePage = () => {
 
         {/* Video transition */}
         {room.phase === "video-transition" && (
-          <VideoTransition onComplete={hostActions.showMapTransition} duration={7} />
+          <VideoTransition src={stageEndVideo} onComplete={hostActions.showMapTransition} duration={7} />
         )}
 
         {/* Map transition */}

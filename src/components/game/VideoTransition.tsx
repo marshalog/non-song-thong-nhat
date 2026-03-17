@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import tankVideo from "@/assets/Xe_tang_DDL.mp4";
 
 interface VideoTransitionProps {
+  src: string;
   onComplete: () => void;
   duration?: number;
 }
 
-export function VideoTransition({ onComplete, duration = 7 }: VideoTransitionProps) {
+export function VideoTransition({ src, onComplete, duration = 7 }: VideoTransitionProps) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [needsUserGesture, setNeedsUserGesture] = useState(false);
 
@@ -48,7 +48,7 @@ export function VideoTransition({ onComplete, duration = 7 }: VideoTransitionPro
       <div className="relative w-full max-w-3xl rounded-2xl overflow-hidden shadow-2xl border-2 border-gold">
         <video
           ref={videoRef}
-          src={tankVideo}
+          src={src}
           autoPlay
           playsInline
           loop

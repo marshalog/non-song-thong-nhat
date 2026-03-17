@@ -6,6 +6,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "@/hooks/use-toast";
 import { VideoTransition } from "@/components/game/VideoTransition";
+import c1Video from "@/assets/C1.mp4";
+import c2Video from "@/assets/C2.mp4";
+import c3Video from "@/assets/C3.mp4";
 import tankIcon from "@/assets/tank-icon.png";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -123,6 +126,7 @@ const TeamGamePage = () => {
   const stage = stages[room.current_stage];
   const mcQuestions = getMcQuestions(stage);
   const bonusQuestions = getBonusQuestions(stage);
+  const stageEndVideo = [c1Video, c2Video, c3Video][room.current_stage] ?? c1Video;
 
   // Handle MC answer
   const handleMcAnswer = async (answerIndex: number) => {
@@ -375,7 +379,7 @@ const TeamGamePage = () => {
   if (room.phase === "video-transition") {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
-        <VideoTransition onComplete={() => {}} duration={7} />
+        <VideoTransition src={stageEndVideo} onComplete={() => {}} duration={7} />
       </div>
     );
   }
