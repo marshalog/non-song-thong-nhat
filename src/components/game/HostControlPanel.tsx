@@ -84,10 +84,13 @@ export function HostControlPanel({ room, teams, answers, stages }: HostControlPa
                       {activeTeams.map(t => {
                         const ans = qAnswers.find(a => a.team_id === t.id);
                         if (!ans) return <td key={t.id} className="text-center py-1.5 px-2 text-primary-foreground/30">—</td>;
-                        const isCorrect = ans.answer_index === q.correctAnswer;
+                        const isCorrect = q.type === 'multiple-choice'
+                          ? ans.answer_index === q.correctAnswer
+                          : ans.text_answer?.trim().toLowerCase() === (q.correctAnswer as string).trim().toLowerCase();
+                        const display = q.type === 'multiple-choice' ? letterLabels[ans.answer_index] : (ans.text_answer || "—");
                         return (
                           <td key={t.id} className={`text-center py-1.5 px-2 font-bold ${isCorrect ? "text-foreground" : "text-primary"}`}>
-                            {letterLabels[ans.answer_index]} {isCorrect ? "✅" : "❌"} ({ans.time_elapsed.toFixed(1)}s)
+                            {display} {isCorrect ? "✅" : "❌"} ({ans.time_elapsed.toFixed(1)}s)
                           </td>
                         );
                       })}
