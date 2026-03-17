@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logoGame from "@/assets/logo_game.png";
+import bgNstn from "@/assets/bg_nstn.png";
 import { Button } from "@/components/ui/button";
 
 const SplashPage = () => {
@@ -8,9 +9,15 @@ const SplashPage = () => {
   const [showInstructions, setShowInstructions] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 victory-sunburst opacity-20" />
+    <div
+      className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden"
+      style={{
+        backgroundImage: `url(${bgNstn})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
 
       {/* Logo animation */}
       <div className="relative z-10 text-center animate-fade-in-up">
