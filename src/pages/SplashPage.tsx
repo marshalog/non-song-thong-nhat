@@ -25,7 +25,7 @@ const SplashPage = () => {
           <img src={logoGame} alt="Non Sông Thống Nhất" className="w-80 md:w-[28rem] object-contain animate-flag-raise" />
         </div>
 
-        <p className="font-display text-lg text-muted-foreground mb-2">
+        <p className="font-display text-lg text-gold mb-2">
           30/4/1975 — Giải phóng miền Nam, thống nhất đất nước
         </p>
 
@@ -55,7 +55,7 @@ const SplashPage = () => {
         <Button
           onClick={() => setShowInstructions(true)}
           variant="ghost"
-          className="mt-6 font-display text-sm text-muted-foreground hover:text-foreground"
+          className="mt-6 font-display text-sm text-gold hover:text-foreground"
         >
           Hướng dẫn chơi game
         </Button>
