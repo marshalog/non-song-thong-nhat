@@ -2,14 +2,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useRoomSubscription } from "@/hooks/useRoomSubscription";
 import { useHostActions } from "@/hooks/useHostActions";
 import { stages } from "@/data/questions";
+import { getMcQuestions, getBonusQuestions } from "@/types/game";
 import { useState, useEffect, useRef } from "react";
 import { GameMap } from "@/components/game/GameMap";
-import { HostQuestionView } from "@/components/game/HostQuestionView";
 import { ScoreboardOverlay } from "@/components/game/ScoreboardOverlay";
 import { EliminationScreen } from "@/components/game/EliminationScreen";
 import { VictoryScreen } from "@/components/game/VictoryScreen";
 import { HostControlPanel } from "@/components/game/HostControlPanel";
 import { VideoTransition } from "@/components/game/VideoTransition";
+import { StageResultsView } from "@/components/game/StageResultsView";
 import tankIcon from "@/assets/tank-icon.png";
 import { Button } from "@/components/ui/button";
 
@@ -21,49 +22,86 @@ const HostGamePage = () => {
   const [showAdmin, setShowAdmin] = useState(false);
   const [adminAuth, setAdminAuth] = useState(false);
   const [adminPwd, setAdminPwd] = useState("");
-  const [localTimer, setLocalTimer] = useState(15);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const [lastQuestionKey, setLastQuestionKey] = useState("");
+  const [mcTimer, setMcTimer] = useState(100);
+  const [bonusTimer, setBonusTimer] = useState(15);
+  const mcTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const bonusTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const mcEndedRef = useRef(false);
 
   // Check admin auth
   useEffect(() => {
     if (room && roomCode) {
       const storedPwd = sessionStorage.getItem(`admin-${roomCode}`);
-      if (storedPwd === room.admin_password) {
-        setAdminAuth(true);
-      }
+      if (storedPwd === room.admin_password) setAdminAuth(true);
     }
   }, [room, roomCode]);
 
-  // Timer
+  // MC phase timer
   useEffect(() => {
-    if (!room) return;
-    const key = `${room.current_stage}-${room.current_question_index}`;
-    if (room.phase === "playing" && key !== lastQuestionKey) {
-      setLastQuestionKey(key);
-      const stage = stages[room.current_stage];
-      const q = stage?.questions[room.current_question_index];
-      if (q) setLocalTimer(q.timeLimit);
+    if (room?.phase !== "playing-mc") {
+      if (mcTimerRef.current) clearInterval(mcTimerRef.current);
+      mcEndedRef.current = false;
+      return;
     }
-  }, [room?.phase, room?.current_stage, room?.current_question_index, lastQuestionKey]);
+    const stage = stages[room.current_stage];
+    if (!stage) return;
+    setMcTimer(stage.mcTimeLimit);
+    mcEndedRef.current = false;
 
-  useEffect(() => {
-    if (room?.phase === "playing" && !room.showing_answer) {
-      timerRef.current = setInterval(() => {
-        setLocalTimer(prev => {
-          if (prev <= 1) {
-            if (timerRef.current) clearInterval(timerRef.current);
-            hostActions.showAnswer();
-            return 0;
+    mcTimerRef.current = setInterval(() => {
+      setMcTimer(prev => {
+        if (prev <= 1) {
+          if (mcTimerRef.current) clearInterval(mcTimerRef.current);
+          if (!mcEndedRef.current) {
+            mcEndedRef.current = true;
+            hostActions.endMcPhase();
           }
-          return prev - 1;
-        });
-      }, 1000);
-      return () => { if (timerRef.current) clearInterval(timerRef.current); };
-    } else {
-      if (timerRef.current) clearInterval(timerRef.current);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => { if (mcTimerRef.current) clearInterval(mcTimerRef.current); };
+  }, [room?.phase, room?.current_stage]);
+
+  // Check if a team finished all MC questions → end MC for everyone
+  useEffect(() => {
+    if (room?.phase !== "playing-mc" || mcEndedRef.current) return;
+    const stage = stages[room.current_stage];
+    const mcCount = getMcQuestions(stage).length;
+    const activeTeams = teams.filter(t => !t.eliminated);
+    const finishedTeam = activeTeams.find(t => t.finished_at !== null);
+    if (finishedTeam) {
+      if (mcTimerRef.current) clearInterval(mcTimerRef.current);
+      mcEndedRef.current = true;
+      hostActions.endMcPhase();
     }
-  }, [room?.phase, room?.showing_answer, lastQuestionKey]);
+  }, [teams, room?.phase, room?.current_stage]);
+
+  // Bonus phase timer
+  useEffect(() => {
+    if (room?.phase !== "playing-bonus") {
+      if (bonusTimerRef.current) clearInterval(bonusTimerRef.current);
+      return;
+    }
+    const stage = stages[room.current_stage];
+    const bonusQs = getBonusQuestions(stage);
+    const q = bonusQs[room.current_question_index];
+    if (!q) return;
+    setBonusTimer(q.timeLimit || 15);
+
+    bonusTimerRef.current = setInterval(() => {
+      setBonusTimer(prev => {
+        if (prev <= 1) {
+          if (bonusTimerRef.current) clearInterval(bonusTimerRef.current);
+          hostActions.showBonusAnswer();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => { if (bonusTimerRef.current) clearInterval(bonusTimerRef.current); };
+  }, [room?.phase, room?.current_question_index]);
 
   // Admin auth gate
   if (!adminAuth) {
@@ -95,11 +133,7 @@ const HostGamePage = () => {
           >
             Xác nhận
           </Button>
-          <Button
-            variant="ghost"
-            onClick={() => navigate("/")}
-            className="w-full mt-3 text-sm text-muted-foreground hover:text-foreground font-display"
-          >
+          <Button variant="ghost" onClick={() => navigate("/")} className="w-full mt-3 text-sm text-muted-foreground hover:text-foreground font-display">
             Quay lại
           </Button>
         </div>
@@ -116,21 +150,17 @@ const HostGamePage = () => {
   }
 
   const stage = stages[room.current_stage];
-  const question = stage?.questions[room.current_question_index];
   const activeTeams = teams.filter(t => !t.eliminated);
   const lastEliminated = teams.filter(t => t.eliminated).slice(-1)[0];
-
-  // Current question answers
-  const currentAnswers = answers.filter(
-    a => a.stage === room.current_stage && a.question_index === room.current_question_index
-  );
+  const mcQuestions = getMcQuestions(stage);
+  const bonusQuestions = getBonusQuestions(stage);
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="bg-army py-3 px-4 shadow-lg">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <h1 className="font-display text-lg font-bold text-primary-foreground">⭐ HÀNH TRÌNH THỐNG NHẤT</h1>
+          <h1 className="font-display text-lg font-bold text-primary-foreground">⭐ NON SÔNG THỐNG NHẤT</h1>
           <div className="flex items-center gap-4">
             <span className="font-display text-sm text-foreground font-bold">{stage?.name}</span>
             <span className="bg-gold/20 text-foreground px-3 py-1 rounded-full text-xs font-display font-bold">
@@ -142,43 +172,33 @@ const HostGamePage = () => {
               size="sm"
               className="px-3 py-1 font-display font-bold text-xs text-primary-foreground hover:text-primary-foreground hover:bg-primary/15 btn-neon"
             >
-              {showAdmin ? "Ẩn bảng điều khiển" : "📊 Bảng điều khiển"}
+              {showAdmin ? "Ẩn" : "📊 Điều khiển"}
             </Button>
           </div>
         </div>
       </header>
 
       <div className="max-w-7xl mx-auto p-4">
-        {/* Admin panel toggle */}
-        {showAdmin && (
-          <HostControlPanel
-            room={room}
-            teams={teams}
-            answers={answers}
-            stages={stages}
-          />
-        )}
+        {showAdmin && <HostControlPanel room={room} teams={teams} answers={answers} stages={stages} />}
 
         {/* Lobby */}
         {room.phase === "lobby" && (
           <div className="space-y-6">
             <GameMap teams={teams} currentStage={room.current_stage} />
-
             <div className="question-card max-w-2xl mx-auto">
               <h2 className="font-display text-2xl font-black text-primary text-center mb-2">
                 {room.current_stage === 0 ? "PHÒNG CHỜ" : `CHUẨN BỊ CHẶNG ${room.current_stage + 1}`}
               </h2>
-              <p className="text-sm text-muted-foreground text-center mb-6">
-                {teams.length}/4 đội đã tham gia
+              <p className="text-sm text-muted-foreground text-center mb-2">{stage.subtitle}</p>
+              <p className="text-xs text-muted-foreground text-center mb-6">
+                {mcQuestions.length} câu trắc nghiệm ({stage.mcTimeLimit}s)
+                {bonusQuestions.length > 0 && ` + ${bonusQuestions.length} câu bonus`}
+                {" • "}{teams.length} đội
               </p>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
                 {teams.map(t => (
-                  <div
-                    key={t.id}
-                    className={`tank-cabin text-center ${t.eliminated ? "eliminated" : ""}`}
-                    style={{ borderLeftColor: t.color, borderLeftWidth: 4 }}
-                  >
+                  <div key={t.id} className={`tank-cabin text-center ${t.eliminated ? "eliminated" : ""}`} style={{ borderLeftColor: t.color, borderLeftWidth: 4 }}>
                     <div className="text-3xl mb-1">{t.icon}</div>
                     <p className="font-display font-bold text-primary-foreground text-sm truncate">{t.name}</p>
                     {t.eliminated && <p className="text-[10px] text-primary-foreground/50">❌ Đã loại</p>}
@@ -203,38 +223,164 @@ const HostGamePage = () => {
           </div>
         )}
 
-        {/* Playing / Showing answer */}
-        {(room.phase === "playing" || room.phase === "showing-answer") && question && (
-          <HostQuestionView
-            question={question}
-            questionIndex={room.current_question_index}
-            totalQuestions={stage.questions.length}
-            stageName={stage.name}
-            timeRemaining={localTimer}
-            isShowingAnswer={room.phase === "showing-answer"}
-            teams={activeTeams}
-            currentAnswers={currentAnswers}
-            onShowAnswer={hostActions.showAnswer}
-            onNext={hostActions.nextQuestion}
+        {/* MC Phase - Host monitors teams */}
+        {room.phase === "playing-mc" && (
+          <div className="max-w-4xl mx-auto space-y-6">
+            <div className="question-card">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-display text-2xl font-black text-primary">⏱️ TRẮC NGHIỆM</h2>
+                <span className="font-display text-4xl font-black text-primary">{mcTimer}s</span>
+              </div>
+              <div className="w-full h-4 bg-muted rounded-full overflow-hidden mb-6">
+                <div
+                  className="h-full rounded-full transition-all duration-1000 ease-linear"
+                  style={{
+                    width: `${(mcTimer / stage.mcTimeLimit) * 100}%`,
+                    backgroundColor: mcTimer > stage.mcTimeLimit * 0.5
+                      ? "hsl(var(--army-green))"
+                      : mcTimer > stage.mcTimeLimit * 0.2
+                        ? "hsl(var(--gold-dark))"
+                        : "hsl(var(--primary))",
+                  }}
+                />
+              </div>
+
+              <p className="text-sm text-muted-foreground mb-4 font-display">
+                {mcQuestions.length} câu hỏi • Các đội tự trả lời độc lập
+              </p>
+
+              {/* Team progress */}
+              <div className="space-y-3">
+                {activeTeams.map(team => {
+                  const teamAnswerCount = answers.filter(
+                    a => a.team_id === team.id && a.stage === room.current_stage && a.question_index < mcQuestions.length
+                  ).length;
+                  const progress = (teamAnswerCount / mcQuestions.length) * 100;
+                  const isFinished = team.finished_at !== null;
+
+                  return (
+                    <div key={team.id} className="flex items-center gap-3">
+                      <span className="text-xl w-8">{team.icon}</span>
+                      <span className="font-display font-bold text-sm w-24 truncate" style={{ color: team.color }}>{team.name}</span>
+                      <div className="flex-1 h-6 bg-muted rounded-full overflow-hidden relative">
+                        <div
+                          className="h-full rounded-full transition-all duration-300"
+                          style={{ width: `${progress}%`, backgroundColor: team.color }}
+                        />
+                        <span className="absolute inset-0 flex items-center justify-center text-xs font-display font-bold text-foreground">
+                          {teamAnswerCount}/{mcQuestions.length}
+                        </span>
+                      </div>
+                      {isFinished && <span className="text-lg">🏁</span>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            <Button
+              onClick={() => { mcEndedRef.current = true; hostActions.endMcPhase(); }}
+              variant="outline"
+              className="w-full font-display font-bold"
+            >
+              ⏹️ Kết thúc sớm
+            </Button>
+          </div>
+        )}
+
+        {/* Bonus Phase - synchronized fill-in / image questions */}
+        {room.phase === "playing-bonus" && bonusQuestions[room.current_question_index] && (() => {
+          const q = bonusQuestions[room.current_question_index];
+          const mcCount = mcQuestions.length;
+          const globalIdx = mcCount + room.current_question_index;
+          const currentAnswers = answers.filter(a => a.stage === room.current_stage && a.question_index === globalIdx);
+          const letterLabels = ["A", "B", "C", "D"];
+
+          return (
+            <div className="max-w-4xl mx-auto space-y-4">
+              <div className="question-card animate-fade-in-up">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="font-display text-sm font-bold text-army">
+                    {q.type === 'fill-in' ? '✍️ CÂU ĐIỀN ĐÁP ÁN' : '🖼️ CÂU HÌNH ẢNH'}
+                  </span>
+                  <span className="font-display text-sm text-muted-foreground">
+                    Bonus {room.current_question_index + 1}/{bonusQuestions.length}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="font-display text-4xl font-black text-primary">{bonusTimer}s</span>
+                  <span className="text-sm text-muted-foreground">
+                    {currentAnswers.length}/{activeTeams.length} đội đã trả lời
+                  </span>
+                </div>
+
+                {q.imageUrl && (
+                  <div className="mb-4 flex justify-center">
+                    <img src={q.imageUrl} alt="Hình ảnh câu hỏi" className="max-h-60 rounded-lg border-2 border-border" />
+                  </div>
+                )}
+
+                <h2 className="font-display text-2xl font-bold text-foreground mb-6">{q.question}</h2>
+
+                {room.showing_answer && (
+                  <div className="bg-army/10 border-2 border-army rounded-lg p-4 mb-4">
+                    <p className="font-display font-bold text-army">Đáp án: {q.correctAnswer}</p>
+                  </div>
+                )}
+
+                {/* Team answers */}
+                {room.showing_answer && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {activeTeams.map(team => {
+                      const ans = currentAnswers.find(a => a.team_id === team.id);
+                      const isCorrect = ans?.text_answer?.trim().toLowerCase() === (q.correctAnswer as string).trim().toLowerCase();
+                      return (
+                        <div key={team.id} className={`px-3 py-1.5 rounded-lg text-xs font-bold border ${
+                          !ans ? "border-border text-muted-foreground"
+                            : isCorrect ? "bg-army/10 border-army text-army"
+                              : "bg-primary/10 border-primary text-primary"
+                        }`}>
+                          {team.icon} {team.name}: {ans ? `${ans.text_answer} ${isCorrect ? "✅" : "❌"}` : "⏰"}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {!room.showing_answer ? (
+                  <Button onClick={hostActions.showBonusAnswer} size="lg" className="w-full font-display font-bold text-lg bg-gold text-foreground hover:bg-gold/90 btn-neon">
+                    Hiện đáp án
+                  </Button>
+                ) : (
+                  <Button onClick={hostActions.nextBonusQuestion} size="lg" className="w-full font-display font-bold text-lg btn-neon">
+                    {room.current_question_index + 1 < bonusQuestions.length ? "Câu tiếp theo" : "Xem kết quả chặng"}
+                  </Button>
+                )}
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* Stage Results */}
+        {room.phase === "stage-results" && (
+          <StageResultsView
+            stage={stage}
+            stageIndex={room.current_stage}
+            teams={teams}
+            answers={answers}
+            onContinue={hostActions.showScoreboard}
           />
         )}
 
         {/* Scoreboard */}
         {room.phase === "scoreboard" && (
-          <ScoreboardOverlay
-            teams={teams}
-            stageName={stage.name}
-            onEliminate={hostActions.eliminateLowest}
-          />
+          <ScoreboardOverlay teams={teams} stageName={stage.name} onEliminate={hostActions.eliminateLowest} />
         )}
 
         {/* Elimination */}
         {room.phase === "elimination" && lastEliminated && (
-          <EliminationScreen
-            eliminatedTeam={lastEliminated}
-            stageName={stage.name}
-            onContinue={hostActions.showVideoTransition}
-          />
+          <EliminationScreen eliminatedTeam={lastEliminated} stageName={stage.name} onContinue={hostActions.showVideoTransition} />
         )}
 
         {/* Video transition */}
@@ -250,11 +396,7 @@ const HostGamePage = () => {
               <p className="font-display text-xl text-foreground font-bold mb-6 animate-fade-in-up">
                 🗺️ Các xe tăng đang di chuyển...
               </p>
-              <Button
-                onClick={hostActions.nextStage}
-                size="lg"
-                className="font-display font-bold text-lg px-8 btn-neon"
-              >
+              <Button onClick={hostActions.nextStage} size="lg" className="font-display font-bold text-lg px-8 btn-neon">
                 Tiếp tục chặng tiếp theo
               </Button>
             </div>
