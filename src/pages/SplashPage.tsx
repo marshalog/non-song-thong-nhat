@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logoGame from "@/assets/logo_game.png";
 import bgNstn from "@/assets/bg_nstn.png";
+import dangKyQuocKy from "@/assets/dang-ky-quoc-ky.png";
 import { Button } from "@/components/ui/button";
 
 const SplashPage = () => {
@@ -21,16 +22,18 @@ const SplashPage = () => {
 
       {/* Logo & content */}
       <div className="relative z-10 text-center animate-fade-in-up sm:translate-x-16 md:translate-x-24 lg:translate-x-32">
-        <div className="mb-6 flex justify-center">
-          <img src={logoGame} alt="Non Sông Thống Nhất" className="w-80 md:w-[28rem] object-contain animate-flag-raise" />
+        {/* Cờ Đảng - Quốc kỳ */}
+        <div className="mb-4 flex justify-center">
+          <img
+            src={dangKyQuocKy}
+            alt="Cờ Đảng và Quốc kỳ Việt Nam"
+            className="w-40 md:w-48 lg:w-56 object-contain"
+          />
         </div>
 
-        <p className="font-display text-lg text-gold mb-2">
-          30/4/1975 — Giải phóng miền Nam, thống nhất đất nước
-        </p>
-
-        <div className="flex items-center justify-center gap-3 mb-10 mt-4">
-          <span className="text-sm text-muted-foreground font-display">⭐ ⭐ ⭐</span>
+        {/* Logo game */}
+        <div className="mb-6 flex justify-center">
+          <img src={logoGame} alt="Non Sông Thống Nhất" className="w-80 md:w-[28rem] object-contain animate-flag-raise" />
         </div>
 
         {/* Buttons */}
