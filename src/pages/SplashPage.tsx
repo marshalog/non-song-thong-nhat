@@ -19,8 +19,8 @@ const SplashPage = () => {
       }}
     >
 
-      {/* Logo animation */}
-      <div className="relative z-10 text-center animate-fade-in-up">
+      {/* Logo & content */}
+      <div className="relative z-10 text-center animate-fade-in-up sm:translate-x-16 md:translate-x-24 lg:translate-x-32">
         <div className="mb-6 flex justify-center">
           <img src={logoGame} alt="Non Sông Thống Nhất" className="w-80 md:w-[28rem] object-contain animate-flag-raise" />
         </div>
