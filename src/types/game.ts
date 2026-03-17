@@ -1,19 +1,33 @@
+export type QuestionType = 'multiple-choice' | 'fill-in' | 'image-fill-in';
+
 export interface Question {
   id: number;
+  type: QuestionType;
   question: string;
-  options: string[];
-  correctAnswer: number;
-  timeLimit: number;
+  options?: string[];
+  correctAnswer: number | string; // index for MC, string for fill-in
+  imageUrl?: string;
+  timeLimit?: number; // only for fill-in/image (per question), MC uses stage timer
 }
 
 export interface StageData {
   id: number;
   name: string;
   subtitle: string;
+  mcTimeLimit: number; // shared timer for all MC questions (seconds)
   questions: Question[];
 }
 
-export type GamePhase = 'lobby' | 'playing' | 'showing-answer' | 'scoreboard' | 'map-transition' | 'stage-result' | 'elimination' | 'victory';
+export type GamePhase =
+  | 'lobby'
+  | 'playing-mc'       // independent MC play
+  | 'playing-bonus'    // synchronized fill-in / image questions
+  | 'stage-results'    // show answer sheet + scores
+  | 'scoreboard'
+  | 'elimination'
+  | 'video-transition'
+  | 'map-transition'
+  | 'victory';
 
 export interface TeamData {
   id: string;
@@ -24,6 +38,8 @@ export interface TeamData {
   score: number;
   eliminated: boolean;
   order_index: number;
+  current_question_index: number;
+  finished_at: string | null;
 }
 
 export interface RoomData {
@@ -35,6 +51,7 @@ export interface RoomData {
   current_question_index: number;
   time_remaining: number;
   showing_answer: boolean;
+  stage_started_at: string | null;
 }
 
 export interface TeamAnswer {
@@ -45,6 +62,7 @@ export interface TeamAnswer {
   question_index: number;
   answer_index: number;
   time_elapsed: number;
+  text_answer: string | null;
 }
 
 export const TEAM_ICONS = [
@@ -66,3 +84,13 @@ export const TEAM_COLORS = [
   "#2EC4B6",
   "#E71D36",
 ];
+
+// Helper to get MC questions from a stage
+export function getMcQuestions(stage: StageData): Question[] {
+  return stage.questions.filter(q => q.type === 'multiple-choice');
+}
+
+// Helper to get bonus (fill-in / image) questions from a stage
+export function getBonusQuestions(stage: StageData): Question[] {
+  return stage.questions.filter(q => q.type !== 'multiple-choice');
+}
