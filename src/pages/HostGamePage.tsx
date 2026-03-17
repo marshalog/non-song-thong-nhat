@@ -12,6 +12,7 @@ import { HostControlPanel } from "@/components/game/HostControlPanel";
 import { VideoTransition } from "@/components/game/VideoTransition";
 import { StageResultsView } from "@/components/game/StageResultsView";
 import tankIcon from "@/assets/tank-icon.png";
+import logoGame from "@/assets/logo_game.png";
 import { Button } from "@/components/ui/button";
 
 const HostGamePage = () => {
@@ -160,17 +161,19 @@ const HostGamePage = () => {
       {/* Header */}
       <header className="bg-army py-3 px-4 shadow-lg">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <h1 className="font-display text-lg font-bold text-primary-foreground">⭐ NON SÔNG THỐNG NHẤT</h1>
+          <div className="flex items-center gap-3">
+            <img src={logoGame} alt="Non Sông Thống Nhất" className="h-10 w-auto object-contain" />
+          </div>
           <div className="flex items-center gap-4">
-            <span className="font-display text-sm text-foreground font-bold">{stage?.name}</span>
-            <span className="bg-gold/20 text-foreground px-3 py-1 rounded-full text-xs font-display font-bold">
+            <span className="font-display text-sm text-white font-bold">{stage?.name}</span>
+            <span className="bg-gold/20 text-white px-3 py-1 rounded-full text-xs font-display font-bold">
               Phòng: {roomCode}
             </span>
             <Button
               onClick={() => setShowAdmin(!showAdmin)}
               variant="ghost"
               size="sm"
-              className="px-3 py-1 font-display font-bold text-xs text-primary-foreground hover:text-primary-foreground hover:bg-primary/15 btn-neon"
+              className="px-3 py-1 font-display font-bold text-xs text-white hover:text-white hover:bg-primary/15 btn-neon"
             >
               {showAdmin ? "Ẩn" : "📊 Điều khiển"}
             </Button>
