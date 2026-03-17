@@ -90,18 +90,45 @@ export function useHostActions(room: RoomData | null, teams: TeamData[], answers
     // Score current bonus question
     const currentQ = bonusQuestions[bonusIdx];
     const activeTeams = teams.filter(t => !t.eliminated);
-    for (const team of activeTeams) {
-      const teamAnswer = answers.find(
-        a => a.team_id === team.id && a.stage === room.current_stage && a.question_index === mcCount + bonusIdx
-      );
-      if (teamAnswer && currentQ) {
-        const isCorrect = typeof currentQ.correctAnswer === 'string'
+    if (currentQ) {
+      type CorrectResult = { team: TeamData; basePoints: number; time: number };
+      const correctResults: CorrectResult[] = [];
+
+      for (const team of activeTeams) {
+        const teamAnswer = answers.find(
+          a => a.team_id === team.id && a.stage === room.current_stage && a.question_index === mcCount + bonusIdx
+        );
+        if (!teamAnswer) continue;
+
+        const isCorrect = typeof currentQ.correctAnswer === "string"
           ? teamAnswer.text_answer?.trim().toLowerCase() === (currentQ.correctAnswer as string).trim().toLowerCase()
           : teamAnswer.answer_index === currentQ.correctAnswer;
+
         if (isCorrect) {
-          const timeBonus = Math.max(0, Math.round(((currentQ.timeLimit || 15) - teamAnswer.time_elapsed) / (currentQ.timeLimit || 15) * 5));
-          await supabase.from("teams").update({ score: team.score + 10 + timeBonus } as any).eq("id", team.id);
+          const totalTime = currentQ.timeLimit || 15;
+          const timeBonus = Math.max(
+            0,
+            Math.round(((totalTime - teamAnswer.time_elapsed) / totalTime) * 5),
+          );
+          const basePoints = 10 + timeBonus;
+          correctResults.push({ team, basePoints, time: teamAnswer.time_elapsed });
         }
+      }
+
+      // Bonus thêm +2 cho đội nhanh nhất, +1 cho đội nhanh nhì
+      correctResults.sort((a, b) => a.time - b.time);
+      if (correctResults[0]) {
+        correctResults[0].basePoints += 2;
+      }
+      if (correctResults[1]) {
+        correctResults[1].basePoints += 1;
+      }
+
+      for (const result of correctResults) {
+        await supabase
+          .from("teams")
+          .update({ score: result.team.score + result.basePoints } as any)
+          .eq("id", result.team.id);
       }
     }
 
