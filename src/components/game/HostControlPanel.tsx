@@ -7,98 +7,105 @@ interface HostControlPanelProps {
   stages: StageData[];
 }
 
+const TOTAL_QUESTIONS = 10;
+
+function getAnsweredCount(teamId: string, stage: number, answers: TeamAnswer[]): number {
+  return answers.filter(a => a.team_id === teamId && a.stage === stage).length;
+}
+
 export function HostControlPanel({ room, teams, answers, stages }: HostControlPanelProps) {
-  const activeTeams = teams.filter(t => !t.eliminated);
-  const letterLabels = ["A", "B", "C", "D"];
+  const stage = stages[room.current_stage];
+  const totalInStage = stage?.questions.length ?? TOTAL_QUESTIONS;
 
   return (
     <div className="mb-6 animate-fade-in-up">
-      <div className="tank-cabin">
-        <h3 className="font-display text-lg font-bold text-foreground mb-4">📊 BẢNG ĐIỀU KHIỂN ADMIN</h3>
+      <div className="host-control-panel">
+        {/* Header - military style */}
+        <div className="panel-header">
+          <div className="panel-header-accent" />
+          <h3 className="font-display text-lg font-bold tracking-wider uppercase">
+            Tình hình chiến dịch
+          </h3>
+          <p className="font-display text-xs opacity-80 mt-0.5">
+            Bảng theo dõi trạng thái — không hiển thị đáp án
+          </p>
+        </div>
 
-        {/* Room info */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
-          <div className="bg-secondary/50 rounded-lg p-3">
-            <p className="text-[10px] text-primary-foreground/60 font-display">Mã phòng</p>
-            <p className="font-display font-bold text-foreground text-lg">{room.room_code}</p>
+        {/* Room info - tactical grid */}
+        <div className="panel-info-grid">
+          <div className="panel-info-item">
+            <span className="panel-info-label">Mã phòng</span>
+            <span className="panel-info-value font-mono tracking-widest">{room.room_code}</span>
           </div>
-          <div className="bg-secondary/50 rounded-lg p-3">
-            <p className="text-[10px] text-primary-foreground/60 font-display">Giai đoạn</p>
-            <p className="font-display font-bold text-primary-foreground text-sm">{room.phase}</p>
+          <div className="panel-info-item">
+            <span className="panel-info-label">Giai đoạn</span>
+            <span className="panel-info-value text-xs uppercase">{room.phase}</span>
           </div>
-          <div className="bg-secondary/50 rounded-lg p-3">
-            <p className="text-[10px] text-primary-foreground/60 font-display">Chặng</p>
-            <p className="font-display font-bold text-primary-foreground text-lg">{room.current_stage + 1}/3</p>
+          <div className="panel-info-item">
+            <span className="panel-info-label">Chặng</span>
+            <span className="panel-info-value">{room.current_stage + 1} / 3</span>
           </div>
-          <div className="bg-secondary/50 rounded-lg p-3">
-            <p className="text-[10px] text-primary-foreground/60 font-display">Câu hỏi</p>
-            <p className="font-display font-bold text-primary-foreground text-lg">{room.current_question_index + 1}/10</p>
+          <div className="panel-info-item">
+            <span className="panel-info-label">Thời gian còn</span>
+            <span className="panel-info-value">{room.time_remaining}s</span>
           </div>
         </div>
 
-        {/* Teams overview */}
-        <div className="mb-4">
-          <h4 className="font-display text-sm font-bold text-primary-foreground/80 mb-2">CÁC ĐỘI</h4>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            {teams.map(team => (
-              <div
-                key={team.id}
-                className={`bg-secondary/50 rounded-lg p-2 ${team.eliminated ? "opacity-50" : ""}`}
-              >
-                <div className="flex items-center gap-1.5 mb-1">
-                  <span className="text-lg">{team.icon}</span>
-                  <span className="font-display font-bold text-primary-foreground text-xs truncate">{team.name}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-foreground font-display font-bold text-lg">{team.score}</span>
-                  {team.eliminated && <span className="text-[10px] text-primary-foreground/50">❌ Loại</span>}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Answer history for current stage */}
-        <div>
-          <h4 className="font-display text-sm font-bold text-primary-foreground/80 mb-2">
-            CÂU TRẢ LỜI - {stages[room.current_stage]?.name}
+        {/* Teams status - only progress bars, no answers */}
+        <div className="mt-4">
+          <h4 className="font-display text-sm font-bold text-primary-foreground/90 mb-3 tracking-wide uppercase flex items-center gap-2">
+            <span className="w-1 h-4 bg-primary rounded-sm" />
+            Trạng thái các đơn vị
           </h4>
-          <div className="overflow-x-auto">
-            <table className="w-full text-xs">
-              <thead>
-                <tr className="border-b border-primary-foreground/20">
-                  <th className="text-left py-1.5 px-2 font-display text-primary-foreground/60">Câu</th>
-                  {activeTeams.map(t => (
-                    <th key={t.id} className="text-center py-1.5 px-2 font-display" style={{ color: t.color }}>
-                      {t.icon} {t.name}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {stages[room.current_stage]?.questions.map((q, qIdx) => {
-                  const qAnswers = answers.filter(a => a.stage === room.current_stage && a.question_index === qIdx);
-                  return (
-                    <tr key={qIdx} className="border-b border-primary-foreground/10">
-                      <td className="py-1.5 px-2 text-primary-foreground/80">C{qIdx + 1}</td>
-                      {activeTeams.map(t => {
-                        const ans = qAnswers.find(a => a.team_id === t.id);
-                        if (!ans) return <td key={t.id} className="text-center py-1.5 px-2 text-primary-foreground/30">—</td>;
-                        const isCorrect = q.type === 'multiple-choice'
-                          ? ans.answer_index === q.correctAnswer
-                          : ans.text_answer?.trim().toLowerCase() === (q.correctAnswer as string).trim().toLowerCase();
-                        const display = q.type === 'multiple-choice' ? letterLabels[ans.answer_index] : (ans.text_answer || "—");
-                        return (
-                          <td key={t.id} className={`text-center py-1.5 px-2 font-bold ${isCorrect ? "text-foreground" : "text-primary"}`}>
-                            {display} {isCorrect ? "✅" : "❌"} ({ans.time_elapsed.toFixed(1)}s)
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {teams.map(team => {
+              const answeredCount = getAnsweredCount(team.id, room.current_stage, answers);
+              const percent = totalInStage > 0 ? Math.min(100, (answeredCount / totalInStage) * 100) : 0;
+              const isEliminated = team.eliminated;
+
+              return (
+                <div
+                  key={team.id}
+                  className={`panel-team-card ${isEliminated ? "panel-team-card--eliminated" : ""}`}
+                  style={{ borderLeftColor: team.color, borderLeftWidth: 4 }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span
+                        className="panel-team-icon"
+                        style={{ backgroundColor: `${team.color}20`, color: team.color }}
+                      >
+                        {team.icon}
+                      </span>
+                      <span className="font-display font-bold text-primary-foreground text-sm truncate">
+                        {team.name}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <span className="font-display font-black text-primary-foreground text-lg tabular-nums">
+                        {team.score}
+                      </span>
+                      <span className="text-[10px] text-primary-foreground/60 font-display">điểm</span>
+                      {isEliminated && (
+                        <span className="panel-badge-eliminated">Đã loại</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="w-full h-2 bg-black/30 rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-500 ease-out"
+                      style={{
+                        width: `${percent}%`,
+                        backgroundColor: team.color,
+                      }}
+                    />
+                  </div>
+                  <p className="text-[11px] text-primary-foreground/70 font-display mt-1.5">
+                    Đã trả lời: {answeredCount} / {totalInStage} câu
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

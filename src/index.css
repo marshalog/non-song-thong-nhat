@@ -140,6 +140,75 @@
   .btn-neon:hover::before {
     opacity: 1;
   }
+
+  /* Host control panel - military style */
+  .host-control-panel {
+    @apply rounded-xl border-2 overflow-hidden;
+    border-color: hsl(var(--army-green-light));
+    background: linear-gradient(160deg, hsl(var(--army-green)) 0%, hsl(93 38% 15%) 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255,255,255,0.08),
+      0 6px 20px rgba(0,0,0,0.35),
+      0 0 0 1px rgba(0,0,0,0.1);
+  }
+
+  .panel-header {
+    @apply relative px-4 py-3 border-b border-primary-foreground/20;
+    background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, transparent 100%);
+  }
+
+  .panel-header-accent {
+    @apply absolute left-0 top-0 bottom-0 w-1;
+    background: linear-gradient(180deg, hsl(var(--primary)), hsl(var(--gold)));
+  }
+
+  .panel-header h3 {
+    @apply text-primary-foreground;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+
+  .panel-header p {
+    @apply text-primary-foreground/80;
+  }
+
+  .panel-info-grid {
+    @apply grid grid-cols-2 md:grid-cols-4 gap-2 px-4 py-3;
+  }
+
+  .panel-info-item {
+    @apply flex flex-col gap-0.5 rounded-lg px-3 py-2;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .panel-info-label {
+    @apply text-[10px] font-display font-bold uppercase tracking-wider text-primary-foreground/60;
+  }
+
+  .panel-info-value {
+    @apply font-display font-bold text-primary-foreground;
+  }
+
+  .panel-team-card {
+    @apply rounded-lg p-3 border border-primary-foreground/15;
+    background: rgba(0,0,0,0.3);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+  }
+
+  .panel-team-card--eliminated {
+    @apply opacity-60;
+    filter: grayscale(0.4);
+  }
+
+  .panel-team-icon {
+    @apply w-8 h-8 rounded-md flex items-center justify-center text-xs font-display font-black shrink-0;
+  }
+
+  .panel-badge-eliminated {
+    @apply text-[10px] font-display font-bold uppercase px-2 py-0.5 rounded;
+    background: hsl(var(--destructive) / 0.3);
+    color: hsl(var(--destructive-foreground));
+  }
 }
 
 @keyframes pulse-glow {
